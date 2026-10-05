@@ -1,0 +1,884 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1"><meta http-equiv="Page-Enter" content="BlendTrans(Duration=.5)" /><meta http-equiv="Page-Exit" content="BlendTrans(Duration=.5)" /><title>
+	Dokumentet e publikuara
+</title><link href="../css/NN_style.css" rel="stylesheet" type="text/css" />
+    
+     <script src="../jQuery/jquery.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        if (!document.all) {
+            window.onbeforeunload = function () {
+                Sys.WebForms.PageRequestManager.getInstance().add_endRequest(endRequest);
+            }
+        }
+     
+        function endRequest(sender, e) {
+            err = e.get_error();
+            if (err) {
+                if (err.name == "Sys.WebForms.PageRequestManagerServerErrorException") {
+                    e.set_errorHandled(true);
+                }
+            }
+        }
+    </script> 
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $("table.Filter input.form-input-text").attr("tabindex", "1");
+        $("table.Filter select.form-input-dropdown").attr("tabindex", "1");
+       
+        });
+      
+    
+        function SaveFilter() {
+            var filterName = window.prompt(Translations["SearchFrm_UpisNovogFiltera"], Translations["SearchFrm_DefaultFilterValue"]);
+            if (filterName == null || TrimString(filterName) == "") {
+                return false;
+            }
+            else {
+                document.getElementById("uiFilterName").value = TrimString(filterName);
+                return true;
+            }
+        }
+
+        function TrimString(s) {
+            return s.replace(/^\s+|\s+$/g, "");
+        }
+
+        function SwitchFilterVisibility() {
+            var ctlFilterRow = document.getElementById("uiFilterRow");
+            var uiTraziButton = document.getElementById("uiTraziButton");
+            var ctlHrRow = document.getElementById("uiHrRow");
+            var ctlFilterDisplayStyle = document.getElementById("uiFilterDisplayStyle");
+            if (ctlFilterRow == null || ctlHrRow == null || ctlFilterDisplayStyle == null)
+                return;
+
+            var isHidden = (ctlFilterRow.style.display == "none");
+            ctlFilterRow.style.display = (isHidden) ? "" : "none";
+            ctlHrRow.style.display = (isHidden) ? "" : "none";
+            ctlFilterDisplayStyle.value = (isHidden) ? "" : "none";
+            uiTraziButton.style.display = (isHidden) ? "" : "none";
+            
+            if (isHidden) {
+                var sControlIdToFocus = document.getElementById("uiFirstFilterControlId").value;
+                if (sControlIdToFocus != null && sControlIdToFocus != "") {
+                    var ctlToFocus = document.getElementById(sControlIdToFocus);
+                    if (ctlToFocus != null) {
+                        try { ctlToFocus.focus(); }
+                        catch (e) { }
+                    }
+                }
+            }
+        }
+
+        function Refresh() {
+            document.getElementById("uiFilterSearch").click();
+        }
+
+        var iPendingRequestTimerId = null;
+
+        function DoAsyncPostBack() {
+            // Only one request at a time allowed. Only one request in waiting list.
+            var atlasManager = Sys.WebForms.PageRequestManager.getInstance();
+            if (!atlasManager.get_isInAsyncPostBack()) {
+                iPendingRequestTimerId = null;
+                // Don't "enable all - disable some" if async request is fast. Otherwise the buttons may flash.
+                setTimeout("EnableAllCommands();", 200);
+                atlasManager._doPostBack("uiDoAsyncPostBackBtn", "");
+            }
+            else {
+                if (iPendingRequestTimerId != null)
+                    clearTimeout(iPendingRequestTimerId);
+
+                iPendingRequestTimerId = setTimeout("DoAsyncPostBack();", 500);
+            }
+        }
+//        function changePropertyActive() {
+//            debugger;
+//            this.setAttribute('class', 'FavouritesDeactive');
+//            this.setAttribute('title', 'Makni iz favorita');        
+//        }
+//        function setTimeoutWorkaroundActive() {
+//            setTimeout('changePropertyActive();', 2000);
+//        }
+
+//        function changePropertyDeactive() {
+//            debugger;
+//            this.setAttribute('class', 'FavouritesActive');
+//            this.setAttribute('title', 'Dodaj u favorit');
+//        }
+//        function setTimeoutWorkaroundDeactive() {
+//            setTimeout('changePropertyDeactive();', 2000);
+//        }           
+    </script>
+
+<link href='../css/Pregledi.css' type='text/css' rel='stylesheet' /><style type="text/css">
+	.searchview-text-decoration-none { text-decoration:none; }
+	.searchview-nowrap-nodecoration { white-space:nowrap;text-decoration:none; }
+	.uiContextMenu_ctl00_0 { background-color:white;visibility:hidden;display:none;position:absolute;left:0px;top:0px; }
+	.uiContextMenu_ctl00_1 { text-decoration:none; }
+	.uiContextMenu_ctl00_2 {  }
+	.uiContextMenu_ctl00_3 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_4 { background-color:White;width:150px; }
+	.uiContextMenu_ctl00_5 { background-color:White;border-color:LightGrey;border-width:1px;border-style:Ridge; }
+	.uiContextMenu_ctl00_6 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_7 { background-color:White;width:150px; }
+	.uiContextMenu_ctl00_8 { background-color:White;border-color:LightGrey;border-width:1px;border-style:Ridge; }
+	.uiContextMenu_ctl00_9 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_10 { background-color:White; }
+	.uiContextMenu_ctl00_11 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_12 { background-color:White; }
+	.uiContextMenu_ctl00_13 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_14 { color:Black;background-color:#E6E6E6; }
+	.uiContextMenu_ctl00_15 { color:Black;border-style:none; }
+	.uiContextMenu_ctl00_16 { color:Black;background-color:#E6E6E6; }
+
+</style></head>
+<body class="body-background" style="background-color: White;" oncontextmenu="return false;"
+    onkeydown="if (event.keyCode==13 || event.witch==13) document.getElementById('uiFilterSearch').click();">
+
+    <script type="text/javascript">	
+        function EnableAllCommands()
+        {
+            // Don't enable all commands if the async request has already been processed.
+            var atlasManager = Sys.WebForms.PageRequestManager.getInstance();
+            if (!atlasManager.get_isInAsyncPostBack())
+                return;
+                
+            Idom3_CommandToolBar_EnableAll('uiCommandButtons', 14); Idom3_CommandMenu_EnableAll('uiContextMenu_ctl00', 17);            
+        }
+    </script>
+
+    <form method="post" action="./SearchFrm.aspx?filterState=%253cISearchEngineFieldCollection%252b%252f%253e&amp;providerKey=ObjavljeniDokumenti_Idom3.RPN.BL.ObjavljeniDokumentiSearch__sq-AL&amp;guid=b043a538-21d2-4c76-8c38-a56cc93de596" id="form1">
+<div>
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE2NjQ0MTgzNzAPFgIeE1ZhbGlkYXRlUmVxdWVzdE1vZGUCARYCAgEPZBYSAgMPZBYQAgEPFgQeBXRpdGxlBRNUcmVnby9mc2hlaCBmaWx0cmluHgdWaXNpYmxlZxYCAgEPFgIeBFRleHQFBkvDq3Jrb2QCAw8PFgIfAwUXRG9rdW1lbnRldCBlIHB1Ymxpa3VhcmFkZAIFDw8WAh8CaGRkAg0PFgIfAmdkAg8PFgQfAQUORnNoaW5pIGZpbHTDq3IfAmdkAhEPFgQfAQUMUnVhaiBmaWx0w6tyHwJnZAIVDxYEHwEFG1ByaW50by9la3Nwb3J0byB0w6sgZGjDq25hdB8CZ2QCFw8WBB8BBQtLT25maWd1cmltaR4Hb25DbGljawXyAXdpbmRvdy5vcGVuKCdTZWFyY2hPcHRpb25zRnJtLmFzcHg/cHJvdmlkZXJLZXk9T2JqYXZsamVuaURva3VtZW50aV9JZG9tMy5SUE4uQkwuT2JqYXZsamVuaURva3VtZW50aVNlYXJjaF9fc3EtQUwmZ3VpZD1iNTU2NmQ1Ni05ZWY5LTRjZWEtYjAyYy0zOTUwYTY1MjIwZDcnLCAnU2VhcmNoT3B0aW9uc0ZybScsICd3aWR0aD00MDAsaGVpZ2h0PTMwMCx0b3A9MjAwLGxlZnQ9MjAwLHN0YXR1cz1ubyxyZXNpemFibGU9eWVzJyk7ZAIFDxYCHgVzdHlsZQUJZGlzcGxheTo7FgJmD2QWAgIBD2QWAmYPZBYMZg9kFgICAg9kFgJmD2QWAmYPZBYEZg8PZBYCHwUFDWRpc3BsYXk6bm9uZTtkAgEPZBYCZg8WAh4Dc3JjBR9+L0ltYWdlcy9idXR0b25zL2J0bl9zbWxfZ3QucG5nZAIHD2QWBAIBD2QWAmYPFCsAEBQrAANkZBYEHghDc3NDbGFzcwUQZm9ybS1pbnB1dC13aGl0ZR4EXyFTQgICFgQfBwUMV2Vla2RheVN0eWxlHwgCAhYEHwcFDFdlZWtlbmRTdHlsZR8IAgIWBB8HBQ1PZmZNb250aFN0eWxlHwgCAhYEHwcFEVNlbGVjdGVkRGF0ZVN0eWxlHwgCAhYEHwcFEE1vbnRoSGVhZGVyU3R5bGUfCAICFgQfBwUORGF5SGVhZGVyU3R5bGUfCAICFgQfBwUOQ2xlYXJEYXRlU3R5bGUfCAICFgQfBwUOR29Ub1RvZGF5U3R5bGUfCAICFgQfBwUNVG9kYXlEYXlTdHlsZR8IAgJkZGRkZGQWBAIDDw8WAh4NQWx0ZXJuYXRlVGV4dAUFIC4uLiAWBB8FBSp2ZXJ0aWNhbC1hbGlnbjp0ZXh0LWJvdHRvbTtjdXJzb3I6cG9pbnRlcjseB29uY2xpY2sFSkNhbGVuZGFyUG9wdXBfRmluZENhbGVuZGFyKCd1aUZpbHRlcl9DYWxlbmRhcl9Sb2taYURvc3RhdnVQb251ZGEnKS5TaG93KCk7ZAIEDxYCHgV2YWx1ZWRkAgIPZBYCZg9kFgJmD2QWBGYPD2QWAh8FBQ1kaXNwbGF5Om5vbmU7FgICAQ8UKwAQFCsAA2RkFgQfBwUQZm9ybS1pbnB1dC13aGl0ZR8IAgIWBB8HBQxXZWVrZGF5U3R5bGUfCAICFgQfBwUMV2Vla2VuZFN0eWxlHwgCAhYEHwcFDU9mZk1vbnRoU3R5bGUfCAICFgQfBwURU2VsZWN0ZWREYXRlU3R5bGUfCAICFgQfBwUQTW9udGhIZWFkZXJTdHlsZR8IAgIWBB8HBQ5EYXlIZWFkZXJTdHlsZR8IAgIWBB8HBQ5DbGVhckRhdGVTdHlsZR8IAgIWBB8HBQ5Hb1RvVG9kYXlTdHlsZR8IAgIWBB8HBQ1Ub2RheURheVN0eWxlHwgCAmRkZGRkZBYEAgMPDxYCHwkFBSAuLi4gFgQfBQUqdmVydGljYWwtYWxpZ246dGV4dC1ib3R0b207Y3Vyc29yOnBvaW50ZXI7HwoFU0NhbGVuZGFyUG9wdXBfRmluZENhbGVuZGFyKCd1aUZpbHRlcl9DYWxlbmRhcl9Sb2taYURvc3RhdnVQb251ZGFfRW5kVmFsdWUnKS5TaG93KCk7ZAIEDxYCHwtkZAIBD2QWAmYPFgIfBgUffi9JbWFnZXMvYnV0dG9ucy9idG5fc21sX2d0LnBuZ2QCDA9kFgQCAQ9kFgJmDxQrABAUKwADZGQWBB8HBRBmb3JtLWlucHV0LXdoaXRlHwgCAhYEHwcFDFdlZWtkYXlTdHlsZR8IAgIWBB8HBQxXZWVrZW5kU3R5bGUfCAICFgQfBwUNT2ZmTW9udGhTdHlsZR8IAgIWBB8HBRFTZWxlY3RlZERhdGVTdHlsZR8IAgIWBB8HBRBNb250aEhlYWRlclN0eWxlHwgCAhYEHwcFDkRheUhlYWRlclN0eWxlHwgCAhYEHwcFDkNsZWFyRGF0ZVN0eWxlHwgCAhYEHwcFDkdvVG9Ub2RheVN0eWxlHwgCAhYEHwcFDVRvZGF5RGF5U3R5bGUfCAICZGRkZGRkFgQCAw8PFgIfCQUFIC4uLiAWBB8FBSp2ZXJ0aWNhbC1hbGlnbjp0ZXh0LWJvdHRvbTtjdXJzb3I6cG9pbnRlcjsfCgVDQ2FsZW5kYXJQb3B1cF9GaW5kQ2FsZW5kYXIoJ3VpRmlsdGVyX0NhbGVuZGFyX0RhdHVtT2JqYXZlJykuU2hvdygpO2QCBA8WAh8LZGQCAg9kFgJmD2QWAmYPZBYEZg8PZBYCHwUFDWRpc3BsYXk6bm9uZTsWAgIBDxQrABAUKwADZGQWBB8HBRBmb3JtLWlucHV0LXdoaXRlHwgCAhYEHwcFDFdlZWtkYXlTdHlsZR8IAgIWBB8HBQxXZWVrZW5kU3R5bGUfCAICFgQfBwUNT2ZmTW9udGhTdHlsZR8IAgIWBB8HBRFTZWxlY3RlZERhdGVTdHlsZR8IAgIWBB8HBRBNb250aEhlYWRlclN0eWxlHwgCAhYEHwcFDkRheUhlYWRlclN0eWxlHwgCAhYEHwcFDkNsZWFyRGF0ZVN0eWxlHwgCAhYEHwcFDkdvVG9Ub2RheVN0eWxlHwgCAhYEHwcFDVRvZGF5RGF5U3R5bGUfCAICZGRkZGRkFgQCAw8PFgIfCQUFIC4uLiAWBB8FBSp2ZXJ0aWNhbC1hbGlnbjp0ZXh0LWJvdHRvbTtjdXJzb3I6cG9pbnRlcjsfCgVMQ2FsZW5kYXJQb3B1cF9GaW5kQ2FsZW5kYXIoJ3VpRmlsdGVyX0NhbGVuZGFyX0RhdHVtT2JqYXZlX0VuZFZhbHVlJykuU2hvdygpO2QCBA8WAh8LZGQCAQ9kFgJmDxYCHwYFH34vSW1hZ2VzL2J1dHRvbnMvYnRuX3NtbF9ndC5wbmdkAg0PZBYCAgIPZBYCZg9kFgJmD2QWBGYPD2QWAh8FBQ1kaXNwbGF5Om5vbmU7ZAIBD2QWAmYPFgIfBgUffi9JbWFnZXMvYnV0dG9ucy9idG5fc21sX2d0LnBuZ2QCDg9kFgICAg9kFgJmD2QWAmYPZBYEZg8PZBYCHwUFDWRpc3BsYXk6bm9uZTtkAgEPZBYCZg8WAh8GBR9+L0ltYWdlcy9idXR0b25zL2J0bl9zbWxfZ3QucG5nZAIPDw8WAh8CaGQWAmYPZBYCAgEPDxYIHgtDZWxsUGFkZGluZ2YeC0NlbGxTcGFjaW5nAgIeBVdpZHRoGwAAAAAAAFlABwAAAB8IAoCCGGQWAmYPZBYCAgQPZBYCZg8QDxYCHgxBdXRvUG9zdEJhY2tnZBAVAQ5aZ2ppZGggZmlsdMOrchUBABQrAwFnFgFmZAIHDxYCHwUFCWRpc3BsYXk6O2QCCQ8WAh8FBQlkaXNwbGF5OjtkAgsPZBYCAgEPDxYEHhN1aVZpZXdfT3JkZXJCeUZpZWxkBQtEYXR1bU9iamF2ZR4bdWlWaWV3X1JldmVyc2VTb3J0RGlyZWN0aW9uZ2QWAmYPZBYGZg9kFgJmD2QWAmYPPCsACwIADxYMHhBDdXJyZW50UGFnZUluZGV4AggeDERhdGFLZXlGaWVsZAUCSWQeCERhdGFLZXlzFhQCuMaGAgK6vIYCAr/GhgICu7yGAgLExoYCAr28hgICx8aGAgLAvIYCAtTGhgICwryGAgLnxoYCAsS8hgIC8saGAgLTvIYCAvzGhgIC6LyGAgL+xoYCAuu8hgICkMeGAgLxvIYCHgtfIUl0ZW1Db3VudAIUHhVfIURhdGFTb3VyY2VJdGVtQ291bnQCyAEeCVBhZ2VDb3VudAIKZAEUKwATPCsABAEAFgIeCkhlYWRlclRleHQFNDxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPjwvc3Bhbj48KwAEAQAWAh8YBTQ8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz48L3NwYW4+PCsABAEAFgIfGAVHPHNwYW4gY2xhc3M9J3NlYXJjaHZpZXctbm93cmFwLW5vZGVjb3JhdGlvbic+TnVtcmluIGUgcHJva3VyaW1pdDwvc3Bhbj48KwAEAQAWAh8YBUo8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5BdXRvcml0ZXRpIGtvbnRyYWt0dWVzPC9zcGFuPjwrAAQBABYCHxgFRjxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPk51bXJpIGkgcHVibGlraW1pdDwvc3Bhbj48KwAEAQAWAh8YBUY8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5MbG9qaSBpIGRva3VtZW50aXQ8L3NwYW4+PCsABAEAFgIfGAVPPHNwYW4gY2xhc3M9J3NlYXJjaHZpZXctbm93cmFwLW5vZGVjb3JhdGlvbic+TMOrbmRhIGUgcHJva3VyaW1pdCAvIGdydXBpPC9zcGFuPjwrAAQBABYCHxgFNzxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPkZQUDwvc3Bhbj48KwAEAQAWAh8YBUU8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5GUFAgLSBQw6tyc2hrcmltaTwvc3Bhbj48KwAEAQAWAh8YBUY8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5MbG9qaSBpIGtvbnRyYXTDq3M8L3NwYW4+PCsABAEAFgIfGAVGPHNwYW4gY2xhc3M9J3NlYXJjaHZpZXctbm93cmFwLW5vZGVjb3JhdGlvbic+VmxlcmEgZSBrb250cmF0w6tzPC9zcGFuPjwrAAQBABYCHxgFPTxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPlByb2NlZHVyYTwvc3Bhbj48KwAEAQAWAh8YBUc8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5WbGVyYSBlIHBhcmFzaGlrdWFyPC9zcGFuPjwrAAQBABYCHxgFQzxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPkRhdGEgZSBNYnlsbGplczwvc3Bhbj48KwAEAQAWAh8YBU08c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5EYXRhIGUgcHVibGlraW1pdCAmIzk2NjA7PC9zcGFuPjwrAAQBABYCHxgFPzxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPlJpLVRlbmRlcmltPC9zcGFuPjwrAAQBABYCHxgFRTxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPlZlbmRpIGkgbGlmZXJpbWl0PC9zcGFuPjwrAAQBABYCHxgFOjxzcGFuIGNsYXNzPSdzZWFyY2h2aWV3LW5vd3JhcC1ub2RlY29yYXRpb24nPkFua2FuZDwvc3Bhbj48KwAEAQAWAh8YBUk8c3BhbiBjbGFzcz0nc2VhcmNodmlldy1ub3dyYXAtbm9kZWNvcmF0aW9uJz5TdGF0dXNpIGkgcHJvY2VkdXLDq3M8L3NwYW4+ZAIBD2QWAmYPZBYCZg8PFgIfAwVoTnVtcmkgaSBww6tyZ2ppdGhzaMOrbSB0w6sgZGjDq25hdmUgdMOrIGNpbGF0IGkgcGxvdMOrc29qbsOrIGtyaXRlcmV0IGUga8OrcmtpbWl0OiA8c3Bhbj4gMjE3OTI5Ljwvc3Bhbj5kZAICD2QWAmYPDxYEHg9Ib3Jpem9udGFsQWxpZ24LKilTeXN0ZW0uV2ViLlVJLldlYkNvbnRyb2xzLkhvcml6b250YWxBbGlnbgMfCAKAgARkZAIND2QWAgIBD2QWAmYPZBYCZg9kFggCAQ9kFgJmD2QWAgIBDw9kFgIfBQUNZGlzcGxheTpub25lO2QCAg9kFgJmD2QWAgIBDw9kFgIfBQUNZGlzcGxheTpub25lO2QCAw9kFgJmD2QWAgIBDw9kFgIfBQUNZGlzcGxheTpub25lO2QCBA9kFgJmD2QWAgIBDw9kFgIfBQUNZGlzcGxheTpub25lO2QCDw9kFgICAQ8WAh8CZ2QCIw9kFgJmD2QWAgIBDw9kFgIfBQUNZGlzcGxheTpub25lO2QCJQ8PFgIeCEltYWdlVXJsZWRkGAYFJnVpRmlsdGVyJENhbGVuZGFyX0RhdHVtT2JqYXZlX0VuZFZhbHVlDw9kZGQFJHVpRmlsdGVyJENhbGVuZGFyX1Jva1phRG9zdGF2dVBvbnVkYQ8PZGRkBRJ1aVZpZXckZ3JpZFJlc3VsdHMPD2RlZAUtdWlGaWx0ZXIkQ2FsZW5kYXJfUm9rWmFEb3N0YXZ1UG9udWRhX0VuZFZhbHVlDw9kZGQFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxY7BSV1aUZpbHRlciRJc1ZhbGlkX0Jyb2ogTmFiYXZlX0VuZFZhbHVlBRt1aUZpbHRlciRJc051bGxfQnJvaiBOYWJhdmUFHnVpRmlsdGVyJEFkZFdpdGhPcl9Ccm9qIE5hYmF2ZQUbdWlGaWx0ZXIkTmVnYXRlX0Jyb2ogTmFiYXZlBRx1aUZpbHRlciRBbnlXb3JkX0Jyb2ogTmFiYXZlBRx1aUZpbHRlciRJc051bGxfTmFydWNpdGVsaklkBR91aUZpbHRlciRBZGRXaXRoT3JfTmFydWNpdGVsaklkBRx1aUZpbHRlciROZWdhdGVfTmFydWNpdGVsaklkBR91aUZpbHRlciRJc051bGxfT3puYWthRG9rdW1lbnRhBSJ1aUZpbHRlciRBZGRXaXRoT3JfT3puYWthRG9rdW1lbnRhBR91aUZpbHRlciROZWdhdGVfT3puYWthRG9rdW1lbnRhBSB1aUZpbHRlciRBbnlXb3JkX096bmFrYURva3VtZW50YQUjdWlGaWx0ZXIkSXNOdWxsX05heml2VnJzdGVEb2t1bWVudGEFJnVpRmlsdGVyJEFkZFdpdGhPcl9OYXppdlZyc3RlRG9rdW1lbnRhBSN1aUZpbHRlciROZWdhdGVfTmF6aXZWcnN0ZURva3VtZW50YQUkdWlGaWx0ZXIkQW55V29yZF9OYXppdlZyc3RlRG9rdW1lbnRhBR11aUZpbHRlciRJc051bGxfTmF6aXZFbnRpdGV0YQUgdWlGaWx0ZXIkQWRkV2l0aE9yX05heml2RW50aXRldGEFHXVpRmlsdGVyJE5lZ2F0ZV9OYXppdkVudGl0ZXRhBR51aUZpbHRlciRBbnlXb3JkX05heml2RW50aXRldGEFGXVpRmlsdGVyJElzTnVsbF9DcHZPem5ha2EFHHVpRmlsdGVyJEFkZFdpdGhPcl9DcHZPem5ha2EFGXVpRmlsdGVyJE5lZ2F0ZV9DcHZPem5ha2EFGnVpRmlsdGVyJEFueVdvcmRfQ3B2T3puYWthBRh1aUZpbHRlciRJc051bGxfQ3B2TmF6aXYFG3VpRmlsdGVyJEFkZFdpdGhPcl9DcHZOYXppdgUYdWlGaWx0ZXIkTmVnYXRlX0Nwdk5heml2BRl1aUZpbHRlciRBbnlXb3JkX0Nwdk5heml2BSx1aUZpbHRlciRJc1ZhbGlkX1Jva1phRG9zdGF2dVBvbnVkYV9FbmRWYWx1ZQUidWlGaWx0ZXIkSXNOdWxsX1Jva1phRG9zdGF2dVBvbnVkYQUldWlGaWx0ZXIkQWRkV2l0aE9yX1Jva1phRG9zdGF2dVBvbnVkYQUidWlGaWx0ZXIkTmVnYXRlX1Jva1phRG9zdGF2dVBvbnVkYQUldWlGaWx0ZXIkSXNOdWxsX1Zyc3RhUHJlZG1ldGFOYWJhdmVJZAUodWlGaWx0ZXIkQWRkV2l0aE9yX1Zyc3RhUHJlZG1ldGFOYWJhdmVJZAUldWlGaWx0ZXIkTmVnYXRlX1Zyc3RhUHJlZG1ldGFOYWJhdmVJZAUgdWlGaWx0ZXIkSXNOdWxsX1RpcE5hZG1ldGFuamFfSUQFI3VpRmlsdGVyJEFkZFdpdGhPcl9UaXBOYWRtZXRhbmphX0lEBSB1aUZpbHRlciROZWdhdGVfVGlwTmFkbWV0YW5qYV9JRAUkdWlGaWx0ZXIkSXNOdWxsX1Bvc3R1cGFrTmFkbWV0YW5qYUlkBSd1aUZpbHRlciRBZGRXaXRoT3JfUG9zdHVwYWtOYWRtZXRhbmphSWQFJHVpRmlsdGVyJE5lZ2F0ZV9Qb3N0dXBha05hZG1ldGFuamFJZAUmdWlGaWx0ZXIkSXNOdWxsX1Byb2NpamVuamVuYVZyaWplZG5vc3QFKXVpRmlsdGVyJEFkZFdpdGhPcl9Qcm9jaWplbmplbmFWcmlqZWRub3N0BSZ1aUZpbHRlciROZWdhdGVfUHJvY2lqZW5qZW5hVnJpamVkbm9zdAUndWlGaWx0ZXIkQW55V29yZF9Qcm9jaWplbmplbmFWcmlqZWRub3N0BSV1aUZpbHRlciRJc1ZhbGlkX0RhdHVtT2JqYXZlX0VuZFZhbHVlBRt1aUZpbHRlciRJc051bGxfRGF0dW1PYmphdmUFHnVpRmlsdGVyJEFkZFdpdGhPcl9EYXR1bU9iamF2ZQUbdWlGaWx0ZXIkTmVnYXRlX0RhdHVtT2JqYXZlBTB1aUZpbHRlciRJc1ZhbGlkX1VzdHJvanN0dmVuYUplZGluaWNhSWRfRW5kVmFsdWUFJnVpRmlsdGVyJElzTnVsbF9Vc3Ryb2pzdHZlbmFKZWRpbmljYUlkBSl1aUZpbHRlciRBZGRXaXRoT3JfVXN0cm9qc3R2ZW5hSmVkaW5pY2FJZAUmdWlGaWx0ZXIkTmVnYXRlX1VzdHJvanN0dmVuYUplZGluaWNhSWQFJ3VpRmlsdGVyJEFueVdvcmRfVXN0cm9qc3R2ZW5hSmVkaW5pY2FJZAUidWlGaWx0ZXIkSXNWYWxpZF9PYmpla3RJZF9FbmRWYWx1ZQUYdWlGaWx0ZXIkSXNOdWxsX09iamVrdElkBRt1aUZpbHRlciRBZGRXaXRoT3JfT2JqZWt0SWQFGHVpRmlsdGVyJE5lZ2F0ZV9PYmpla3RJZAUZdWlGaWx0ZXIkQW55V29yZF9PYmpla3RJZAUddWlGaWx0ZXIkQ2FsZW5kYXJfRGF0dW1PYmphdmUPD2RkZKtZquCn8Jt9EEWur0st7w3T7Cvrx66jZMLuMVkl4mhW" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=pbhCTmfaP0NESGyBfKD9nQEVD4UkQ3CeKTPDHVQ54QURw1nIRPFa-RtG8-xn2Wt5f05zlEPLRpBa5StMDB3pYNlbIC3SQTNjrsqR2zI24Bc1&amp;t=638942282805310136" type="text/javascript"></script>
+
+
+<script src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=kPhnNfYGZhkS-ODdP-3-CJhXaepLhZLoA9ZiyDUIJGu4GRcf0P5ENjHpVyJoUvhbJiQ1tD6c4bQ-ZFy5Z7NqI0yWYXRc15N8HPrT5oYtBvY1EXdLu7aavDH4sNc5MDMDtuDBcFb_HFUMhp8QtQdDcvjIoZjYkDzKQQfw2lUCQZw1&amp;t=639019970503851963" type="text/javascript"></script>
+<script src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=nJhKg_180s79WFWjmmfN88lrakmnlMECoaX7cNSbBWRkTHanxkUEoNpKZ4MPVRy9wLtZMMq6EMyzzL6-N5qGX3W-CMhWCvdMPNMVMbRPSaZhLixlrxTK31c-Td8m39NmGQdOC9_nD6gHq1iHRJ_lxUwd-_7saDWLHIBTze1VtTk1&amp;t=639019970503851963" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+function uiFilter_ToggleControlVisibilityByButton(controlId, buttonId, isValidCheckBoxId)
+{
+    var ctl = document.getElementById(controlId);
+    var btn = document.getElementById(buttonId);
+    var isValidChk = document.getElementById(isValidCheckBoxId);
+
+    if (ctl == null  ||  btn == null  ||  isValidChk == null)
+        return;
+
+    if (ctl.style.display == 'none')
+    {
+        ctl.style.display = 'block';
+        btn.src = '/SPIN_PROD/APPLICATION/IPN/Images/buttons/btn_sml_lt.png';
+        isValidChk.checked = true;
+    }
+    else
+    {
+        ctl.style.display = 'none';
+        btn.src = '/SPIN_PROD/APPLICATION/IPN/Images/buttons/btn_sml_gt.png';
+        isValidChk.checked = false;
+    }
+}//]]>
+</script>
+
+<script src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=YmrWSMzeMFiJvmBsw6xtEFB13s6xBjCYRinczfvyVjBd6WBSFU-k0y9iZImcRHo-lFN0QA87-QKS9KNy2Ym2u7LfKJqwTf0T7A5w9VD4yY0HHUya5Uq8a_2jUwben33YcbPKleR_kQ5mlb1lKj8ryZj94oESYznDG-l992kpsjw1&amp;t=639019970503851963" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var Translations = [];
+Translations["SearchFrm_UpisNovogFiltera"] = "Shkruani titullin e filtrit";
+Translations["SearchFrm_DefaultFilterValue"] = "Filtër e mia";
+function uiView_gridResults_OnClick(evt, row, sId) {Idom3_BoundDataGrid_RowClickedHandler(evt, row, sId, 0, '#BCC3D1', 'gridResults__SelectedValues', '', 'Idom3_CommandMenu_Show(event, \'uiContextMenu_ctl00\', \'uiContextMenu_ctl06\', 17, \'uiContextMenu_ctl03\', \'uiContextMenu_ctl05\', \'uiContextMenu_ctl04\', false);', 'DoAsyncPostBack();'); }  function uiFilter_CheckChar(evt){var keyCode = (evt.keyCode > 0) ? evt.keyCode : evt.which; if ('%*'.indexOf(String.fromCharCode(keyCode)) >= 0) return false;} //]]>
+</script>
+
+<script src="/SPIN_PROD/APPLICATION/IPN/ScriptResource.axd?d=Y5YHb7C347WoctALswRYjZZ9fQ-aILR8k5Pw0wrxssf85xAbOlZug07NSvYS9--Hq4hYB7Lx62oybh9kqc_hARCN2VQfotuU-JNl7howP45Ud0hSCbElJwkXUbiu4FVfgMIWvaa_9uq5HfeMzHu8MQ2&amp;t=45b72ff8" type="text/javascript"></script>
+<script src="/SPIN_PROD/APPLICATION/IPN/ScriptResource.axd?d=7FzgvccJGaobOPqfmK7CrOi4isCxyMIVQC1EWDrbvD-6n0QWqt8smOyyChi2KPzMT9IvsvzFWPnuBAhirW1xiX8cH65dQ88d7TN4dxgwxGt5QCvH97X-IRSeUHyT27jex0-KSCPx4xGXQoOail3A94PoWnE3wW1usa01U6NUD7o1&amp;t=45b72ff8" type="text/javascript"></script>
+<script src="/SPIN_PROD/APPLICATION/IPN/ScriptResource.axd?d=9K_qd0UgAVetbwLgsB_caEV61nzTfVPgsEvrY30SVMnW1nM1s4IIXg9KLOP8CteSd_WbZ5-vLaQKzrK-pykJVzrnm_W4YGcUP_XsInaDGGropHujE2AI1FFbjPVl3P_wCM9pIFDHKi5wNXMr5g8rmw2&amp;t=ffffffffe6692900" type="text/javascript"></script>
+<script src="/SPIN_PROD/APPLICATION/IPN/ScriptResource.axd?d=3xS_Zke6is95dMWfa9yRSX-LveTz6UmlmGbwfF_1zNL29t35v66-O8xas9KBMn3a5TG_NSx20NYvU3E1uzVmoHqRHZKZ35ISCdFo5kWCmCNoSL21OWRpyRidiaWTfHkSmvNXSFPbNFdd4Ee1V5fOkAbNvTbIRG7LO5d2T7G4I781&amp;t=32e5dfca" type="text/javascript"></script>
+<script src="/SPIN_PROD/APPLICATION/IPN/ScriptResource.axd?d=janIdP5iaE0QB5K6zB1iPV0CfFEv6WxvISt5lXv4Npy8ONWte9cidjxEaWeYRydxiOBxtoSam2Er1Vg5M80BUVGhEu-CELCg3PP-bEqp9yLIYGZv63NuqJOaNVM8zovTMM0YoXLJkUapTmazb5EyRu9Z4rXKB7s-n2gKXbhCbCANnkUaOhvOklsCbxNKOc680&amp;t=32e5dfca" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="BA0541D2" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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" />
+</div>
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ScriptManager1', 'form1', ['fuiDoAsyncPostBackPnl','','tuiContextMenu$ctl01','','tuiCommandButtons$ctl01',''], ['uiDoAsyncPostBackBtn',''], [], 90, '');
+//]]>
+</script>
+
+    <div>
+        <div class="">
+            <table class="BizTable">
+                <tr>
+                    <td>
+                        
+
+<div class="FormHeader" id="Pocetak">
+    <div class="HeaderInner">
+        <h3>
+            <a href="#" id="FormHeader1_uiFilter" class="Button PokaziSakrij Trazilica left" onclick="SwitchFilterVisibility();" title="Trego/fsheh filtrin"><span>Kërko</span></a> 
+            
+            
+            
+            <span id="FormHeader1_uiCaptionLbl" class="left">Dokumentet e publikuara</span>
+            
+            
+            
+            <span class="right"> 
+                       
+                
+                
+                                               
+                                
+                <a href="#" id="FormHeader1_uiSearchButton" onclick="document.getElementById(&#39;uiFilterSearch&#39;).click();" class="Button Reload left"><span></span></a>
+                
+                
+                <a href="#" id="FormHeader1_uiFilterResetButton" class="Button DeleteFilter left" onclick="document.getElementById(&#39;uiFilterReset&#39;).click();" title="Fshini filtër"><span></span></a>
+                <a href="#" id="FormHeader1_uiSaveFilterHeader" class="Button AddFilter left" onclick="if (SaveFilter()) document.getElementById(&#39;uiFilterSave&#39;).click();" title="Ruaj filtër"><span></span></a> 
+                
+                
+                                
+                
+                
+                <a href="#" id="FormHeader1_uiViewReport" class="Button Print left" onclick="window.open(&#39;SearchReportFrm.aspx&#39;, &#39;SearchReportFrm&#39;, &#39;status=no,resizable=yes&#39;);" title="Printo/eksporto të dhënat"><span></span></a>
+                
+            </span>
+        </h3>
+    </div>
+</div>
+
+
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-border-grey" style="text-align: left">
+                    
+                        <table class="font-bold-grey">
+                            <tr id="uiFilterRow" class="FilterRow" style="display:;">
+	<td id="uiFilterCell" colspan="3">
+                                <span id="uiFilter" FindFilterWidth="60px"><table class="font-bold-grey Filter" cellspacing="1" cellpadding="0" border="0" style="border-width:0px;">
+		<tr>
+			<td align="right">Numrin e prokurimit:&nbsp;</td><td><input name="uiFilter$Txt_Broj Nabave" type="text" id="uiFilter_Txt_Broj Nabave" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td><table cellspacing="0" cellpadding="0" border="0" style="border-width:0px;border-collapse:collapse;">
+				<tr>
+					<td id="uiFilter_Cell_Broj Nabave_EndValue" style="white-space:nowrap;display:none;"><span> -  </span><input name="uiFilter$Txt_Broj Nabave_EndValue" type="text" id="uiFilter_Txt_Broj Nabave_EndValue" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /><span style="display:none;"><input id="uiFilter_IsValid_Broj Nabave_EndValue" type="checkbox" name="uiFilter$IsValid_Broj Nabave_EndValue" /></span></td><td><img src="../Images/buttons/btn_sml_gt.png" id="uiFilter_Toggle_Broj Nabave_EndValue" border="0" onclick="uiFilter_ToggleControlVisibilityByButton(&#39;uiFilter_Cell_Broj Nabave_EndValue&#39;, &#39;uiFilter_Toggle_Broj Nabave_EndValue&#39;, &#39;uiFilter_IsValid_Broj Nabave_EndValue&#39;); " width="20" height="20" style="cursor:pointer;" /></td><td><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_Broj Nabave" type="checkbox" name="uiFilter$IsNull_Broj Nabave" /><label for="uiFilter_IsNull_Broj Nabave">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_Broj Nabave" type="checkbox" name="uiFilter$AddWithOr_Broj Nabave" /><label for="uiFilter_AddWithOr_Broj Nabave">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_Broj Nabave" type="checkbox" name="uiFilter$Negate_Broj Nabave" /><label for="uiFilter_Negate_Broj Nabave">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_Broj Nabave" type="checkbox" name="uiFilter$AnyWord_Broj Nabave" /><label for="uiFilter_AnyWord_Broj Nabave">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_Broj Nabave" id="uiFilter_SelectTextMode_Broj Nabave" class="form-input-dropdown">
+						<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+						<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+						<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+						<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+					</select>&nbsp;</td>
+				</tr>
+			</table></td>
+		</tr><tr>
+			<td align="right">Autoriteti kontraktues:&nbsp;</td><td><select name="uiFilter$Ddl_NaruciteljId" id="uiFilter_Ddl_NaruciteljId" class="form-input-dropdown" style="width:200px;">
+				<option selected="selected" value=""></option>
+				<option value="113669"> K. R. U. &quot; HIDROREGJIONI JUGOR &quot; SH.A.</option>
+				<option value="126587">&quot; LOTARIA E KOSOV&#203;S &quot; SH.A.</option>
+				<option value="134495">&quot; SPORTMARKETING &quot; SH.A.</option>
+				<option value="126829">&quot;QENDRA E MJEK&#203;SIS&#203; URGJENTE&quot; N&#203; PRISHTIN&#203;</option>
+				<option value="111680">ADMINISTRATA TATIMORE E KOSOV&#203;S</option>
+				<option value="126837">AEROPORTI I GJAKOV&#203;S SH.A.</option>
+				<option value="199843">AGJENCIA E KOSOV&#203;S  P&#203;R  AKREDITIM</option>
+				<option value="111575">AGJENCIA E KOSOV&#203;S P&#203;R INTELIGJENC&#203;</option>
+				<option value="116001">AGJENCIA E KOSOV&#203;S P&#203;R PRODUKTE DHE PAJISJE MEDICINALE - AKPPM</option>
+				<option value="172866">AGJENCIA E PUN&#203;SIMIT T&#203; R.KOSOV&#203;S (APRK)</option>
+				<option value="112497">AGJENCIA E STATISTIKAVE T&#203; KOSOV&#203;S</option>
+				<option value="111732">AGJENCIA KATASTRALE E KOSOV&#203;S</option>
+				<option value="111956">AGJENCIA KOSOVARE E PRIVATIZIMIT</option>
+				<option value="111574">AGJENCIA KOSOVARE P&#203;R KRAHASIM DHE VERIFIKIM T&#203; PRON&#203;S</option>
+				<option value="115795">AGJENCIA P&#203;R ADMINISTRIMIN E PASURIS&#203; S&#203; SEKUESTRUAR OSE T&#203; KONFISKUAR</option>
+				<option value="162789">AGJENCIA P&#203;R ARSIM DHE AFT&#203;SIM PROFESIONAL DHE ARSIM P&#203;R T&#203; RRITUR</option>
+				<option value="113381">AGJENCIA PER MENAGJIM EMERGJENT</option>
+				<option value="111560">AGJENCIA P&#203;R MENAXHIMIN E KOMPLEKSEVE MEMORIALE T&#203; KOSOV&#203;S   ( AMKMK )</option>
+				<option value="176875">AGJENCIA P&#203;R MENAXHIMIN E KOMPLEKSEVE MEMORIALE T&#203; KOSOV&#203;S   ( AMKMK )</option>
+				<option value="112737">AGJENCIA P&#203;R PARANDALIMIN E KORRUPSIONIT</option>
+				<option value="184327">AGJENCIA P&#203;R ZHVILLIMIN E BUJQ&#203;SIS&#203;</option>
+				<option value="111828">AGJENCIA PYJORE E KOSOV&#203;S</option>
+				<option value="110960">Agjencia Qendrore e Prokruimit </option>
+				<option value="111733">AGJENCIA SHTET&#203;RORE P&#203;R MBROJTJEN E T&#203; DH&#203;NAVE</option>
+				<option value="111530">AGJENCIONI VETERINARIS&#203; DHE USHQIMIT</option>
+				<option value="126811">AGJENSIA P&#203;R NDIHM&#203; JURIDIKE FALAS</option>
+				<option value="114981">AKADEMIA E KOSOV&#203;S P&#203;R SIGURI PUBLIKE</option>
+				<option value="111974">AKADEMIA E SHKENCAVE DHE E ARTEVE T&#203; KOSOV&#203;S</option>
+				<option value="111694">ARKIVI I KOSOVES</option>
+				<option value="111618">AUTORITETI I AVIACIONIT CIVIL T&#203; KOSOV&#203;S</option>
+				<option value="126727">AUTORITETI RREGULLATIV I HEKURUDHAVE</option>
+				<option value="111833">AUTORITETI RREGULLATIV I KOMUNIKIMEVE ELEKTRONIKE DHE POSTARE</option>
+				<option value="126726">AUTORITETI RREGULLATOR P&#203;R SH&#203;RBIMET E UJIT</option>
+				<option value="114827">BIBLIOTEKA KOMB&#203;TARE E KOSOV&#203;S   PJET&#203;R BOGDANI</option>
+				<option value="177149">Bursa Shqiptare e Energjise Elektrike SHA Dega n&#235; Kosov&#235;</option>
+				<option value="111722">CDI</option>
+				<option value="111696">Dogana e Kosov&#235;s</option>
+				<option value="150215">FONDI I KOSOV&#203;S P&#203;R EFI&#199;IENC&#203; T&#203; ENERGJIS&#203;</option>
+				<option value="128481">FONDI I KURSIMEVE PENSIONALE T&#203; KOSOV&#203;S</option>
+				<option value="144590">Fondi i Sigurimit t&#235; Detyruesh&#235;m t&#235; Kujdesit Sh&#235;ndet&#235;sor</option>
+				<option value="115675">GJYKATA E APELIT</option>
+				<option value="111673">GJYKATA KUSHTETUSE E REPUBLIK&#203;S S&#203; KOSOV&#203;S</option>
+				<option value="114853">GJYKATA SUPREME E KOSOV&#203;S - DHOMA E POSA&#199;ME</option>
+				<option value="119818">GJYKATA THEMELORE FERIZAJ</option>
+				<option value="113272">GJYKATA THEMELORE GJAKOV&#203;</option>
+				<option value="121834">GJYKATA THEMELORE MITROVIC&#203;</option>
+				<option value="122961">GJYKATA THEMELORE N&#203; GJILAN</option>
+				<option value="113205">GJYKATA THEMELORE N&#203; PRISHTIN&#203;</option>
+				<option value="113260">GJYKATA THEMELORE PEJ&#203;</option>
+				<option value="113283">GJYKATA THEMELORE PRIZREN</option>
+				<option value="162570">HIGJIENA SH.A.</option>
+				<option value="113097">I.K. I SH&#203;NDET&#203;SIS&#203; PUBLIKE T&#203; KOSOV&#203;S</option>
+				<option value="114955">INFRASTRUKTURA E HEKURUDHAVE T&#203; KOSOV&#203;S-  INFRAKOS  SH.A.</option>
+				<option value="112655">INSPEKTORATI POLICOR I KOSOV&#203;S</option>
+				<option value="169482">INSPEKTORIATI I PUN&#203;S</option>
+				<option value="111660">Institucioni i Avokatit t&#235; Popullit</option>
+				<option value="141467">INSTITUTI ALBANOLOGJIK</option>
+				<option value="112660">INSTITUTI GJYQ&#203;SOR I KOSOV&#203;S</option>
+				<option value="138834">INSTITUTI I HISTORIS&#203;</option>
+				<option value="190620">INSTITUTI I KRIMEVE T&#203; KRYERA GJAT&#203; LUFT&#203;S N&#203; KOSOV&#203;</option>
+				<option value="111734">INSTITUTI I MJEKSIS PUNES KOSOV&#203;S</option>
+				<option value="154676">JAVNO - KOMUNALNO PRODUZECE   EKOLOGIJA    D.D.</option>
+				<option value="114108">K. Regj. e Mbeturinave    Ekoregjioni    SH.A.</option>
+				<option value="118147">K. Regj. e Mbeturinave    Past&#235;rtia    SH.A.</option>
+				<option value="113689">K. Regjionale e Mbeturinave  Ambienti  SH.A.</option>
+				<option value="113510">K. Regjionale e Mbeturinave &quot;&#199;abrati&quot;SH.A.</option>
+				<option value="113672">K. Regjionale e Mbeturinave &quot;Uniteti&quot; SH.A.</option>
+				<option value="113676">K.K. SKENDERAJ</option>
+				<option value="124000">K.R.U.    MITROVICA   SH.A.</option>
+				<option value="118979">K.Regjionale e Mbeturinave&quot; Pastrimi &quot; SH.A.</option>
+				<option value="111644">K&#235;shilli Gjyq&#235;sor i Kosov&#235;s</option>
+				<option value="128386">K&#203;SHILLI I KOSOV&#203;S P&#203;R TRASH&#203;GIMI KULTURORE ( KKTK )</option>
+				<option value="112053">Keshilli Prokurorial i Kosov&#235;s</option>
+				<option value="112658">KESHILLII PAVARUR MBIKQYR&#203;S PER SHERBIM CIVIL TE KOSOVES</option>
+				<option value="185369">KOLEGJI PUBLIK ND&#203;RKOMB&#203;TAR I BIZNESIT (IBCM)</option>
+				<option value="114784">KOMISIONI I PAVARUR P&#203;R MEDIA</option>
+				<option value="111342">KOMISIONI I PAVARUR P&#203;R MINIERA DHE MINERALE</option>
+				<option value="111643">KOMISIONI QENDROR I ZGJEDHJEVE</option>
+				<option value="111341">KOMISIONI RREGULLATIV I PROKURIMIT PUBLIK</option>
+				<option value="114286">Komp. Rajon Uj&#235;sjell&#235;sit&#39;&#39;Hidromorava&#39;&#39; SH.A.</option>
+				<option value="113462">KOMPANI.P&#203;R MENAXHIMIN E DEPONIVE N&#203; KOSOV&#203;   SH.A</option>
+				<option value="113885">Kompania Rajonale e Uj&#235;sjell&#235;sit    GJAKOVA     SH.A.</option>
+				<option value="113291">KOMPANIA REGJIONALE E UJITJES RADONIQI-DUKAGJINI   SH.A</option>
+				<option value="112468">KOMPANIA UJ&#203;SJELL&#203;SI RAJONAL   PRISHTINA  SH.A.</option>
+				<option value="114213">KOMUNA   RANILLUG</option>
+				<option value="113625">KOMUNA E GJAKOV&#203;S</option>
+				<option value="113895">KOMUNA E ISTOGUT</option>
+				<option value="113612">KOMUNA E JUNIKUT</option>
+				<option value="113937">KOMUNA E KAMENIC&#203;S</option>
+				<option value="117388">KOMUNA E KLLOKOTIT</option>
+				<option value="113507">KOMUNA E MAMUSH&#203;S</option>
+				<option value="113662">KOMUNA E PEJES</option>
+				<option value="115198">KOMUNA E PODUJEV&#203;S</option>
+				<option value="114707">KOMUNA E VUSHTRRIS&#203;</option>
+				<option value="113698">KOMUNA FERIZAJ</option>
+				<option value="113696">KOMUNA GLLOGOC</option>
+				<option value="113626">KOMUNA HANI I ELEZIT</option>
+				<option value="122610">KOMUNA PARTESH</option>
+				<option value="114225">KOMUNA SHT&#203;RPC&#203;</option>
+				<option value="113630">KOMUNA SHTIME</option>
+				<option value="113289">KOMUNA SUHAREK&#203;</option>
+				<option value="110798">KORPORATA ENERGJETIKE E KOSOVES sh.a.</option>
+				<option value="113495">KRPP Departamenti i Monitorimit</option>
+				<option value="116050">KRU    Hidrodrini    SH.A.</option>
+				<option value="121685">KRU   DRINI I BARDH&#203;   SH.A.</option>
+				<option value="116051">KRU&quot;BIFURKACIONI&quot;SH.A.</option>
+				<option value="121936">KUVENDI  KOMUNAL - ZUBIN POTOK</option>
+				<option value="115302">KUVENDI I KOMUNES - KA&#199;ANIK</option>
+				<option value="114068">KUVENDI I KOMUNES DRAGASHI</option>
+				<option value="113652">KUVENDI I KOMUNES SE PRISHTINES</option>
+				<option value="111483">KUVENDI I KOSOV&#203;S</option>
+				<option value="114050">KUVENDI KOMUNAL - OBILIQ</option>
+				<option value="114122">KUVENDI KOMUNAL - RAHOVEC&#203;</option>
+				<option value="113932">KUVENDI KOMUNAL FUSH&#203; KOSOV&#203;</option>
+				<option value="114563">KUVENDI KOMUNAL- GJILAN</option>
+				<option value="113490">KUVENDI KOMUNAL I KLIN&#203;S</option>
+				<option value="113463">KUVENDI KOMUNAL I PRIZRENIT</option>
+				<option value="115301">KUVENDI KOMUNAL LEPOSAVOQ</option>
+				<option value="113562">KUVENDI KOMUNAL LIPIJAN</option>
+				<option value="113813">KUVENDI KOMUNAL MALISHEVE</option>
+				<option value="114826">KUVENDI KOMUNAL MITROVIC&#203;</option>
+				<option value="114110">KUVENDI KOMUNAL NOVO BRDO</option>
+				<option value="113717">KUVENDI KOMUNAL VITI</option>
+				<option value="119127">KUVENDI KOMUNAL ZVE&#199;AN</option>
+				<option value="113559">KUVENDI KOMUNAL-DE&#199;AN</option>
+				<option value="150955">MEPTINIS</option>
+				<option value="111686">MIE-MINISTRIA E INTEGRIMIT EVROPIAN</option>
+				<option value="111517">MIN.E BUJQ&#203;SIS&#203;,PYLLTARIS&#203; DHE ZHVILL. RURAL</option>
+				<option value="110743">Ministria e Administrimit t&#235; Pushtetit Lokal MAPL</option>
+				<option value="112003">MINISTRIA E ARSIMIT</option>
+				<option value="111519">MINISTRIA E DIASPOR&#203;S - MED</option>
+				<option value="111179">MINISTRIA E DIGJITALIZIMIT DHE ADMINISTRATES PUBLIKE</option>
+				<option value="111565">MINISTRIA E DREJTESIS&#203;</option>
+				<option value="161257">MINISTRIA E EKONOMIS&#203;</option>
+				<option value="111045">Ministria e Finacave</option>
+				<option value="166735">MINISTRIA E FINANCAVE</option>
+				<option value="110800">Ministria e Industris&#235;, Nd&#235;rmarr&#235;sis&#235;, Tregtis&#235; dhe Inovacionit</option>
+				<option value="110801">MINISTRIA E INFRASTRUKTURES</option>
+				<option value="126444">MINISTRIA E INOVACIONIT DHE ND&#203;RMARR&#203;SIS&#203;</option>
+				<option value="111851">Ministria e Kultur&#235;s dhe Turizmit</option>
+				<option value="111886">MINISTRIA E MBROJTJES</option>
+				<option value="110797">Ministria e Mjedisit dhe Planifikimi Hap&#235;sinor</option>
+				<option value="111492">MINISTRIA E PUN&#203;VE T&#203; BRENDSHME</option>
+				<option value="111550">MINISTRIA E PUN&#203;VE T&#203; JASHTME</option>
+				<option value="111779">MINISTRIA E SH&#203;NDET&#203;SIS&#203;</option>
+				<option value="203384">MINISTRIA E SPORTIT DHE RINISE</option>
+				<option value="111923">MINISTRIA E ZHVILLIMIT EKONOMIK</option>
+				<option value="126221">MINISTRIA E ZHVILLIMIT RAJONAL</option>
+				<option value="111964">MINISTRIA P&#203;R KOMUNITET DHE KTHIM</option>
+				<option value="111664">MINISTRIA P&#203;R PUN&#203;,FAMILJE DHE VLERAT E LUFT&#203;S &#199;LIRIMTARE</option>
+				<option value="113659">N.P.K. &quot; TRAFIKU URBAN &quot; SH.A.</option>
+				<option value="128712">N.P.L    PASTRIMI    SH.A</option>
+				<option value="113473">N.P.L   STACIONI I AUTOBUS&#203;VE - GJAKOV&#203;    SH.A</option>
+				<option value="162171">N.P.L KU&#39;ZINA</option>
+				<option value="138618">N.P.L.   AMBIENTI  SH.A.</option>
+				<option value="113493">N.P.L. &quot; STACIONI I AUTOBUSAVE - PEJ&#203; &quot; SH.A.</option>
+				<option value="141461">N.P.L.&quot; PALLATI I RINIS&#203; &quot; SH.A.</option>
+				<option value="180646">N.P.Tregu</option>
+				<option value="111611">Nd&#235;rmarrja Hidroekonomike   Ib&#235;r Lepenc  SH.A.</option>
+				<option value="187611">NDERMARRJA PUBLIKE  LOKALE  EKO LLAPI  SH.A.</option>
+				<option value="113558">ND&#203;RMARRJA PUBLIKE BANESORE   SH.A.</option>
+				<option value="182117">ND&#203;RMARRJA PUBLIKE LOKALE    TREGU    SH.A.</option>
+				<option value="194718">ND&#203;RMARRJA PUBLIKE LOKALE DARDANA SH.A.</option>
+				<option value="167765">ND&#203;RMARRJA PUBLIKE LOKALE KASTRIOTI SH.A.</option>
+				<option value="164822">Nd&#235;rmarrje Publike Lokale P&#235;rparimi SH.A.</option>
+				<option value="152468">Nd&#235;rrmarrja Publike Lokale  Prishtina Parking SH.A.</option>
+				<option value="113284">Ngrohtorja e Qytetit Gjakova Sh.A.</option>
+				<option value="116963">Ngrohtorja e Qytetit Termokos Sh.A.</option>
+				<option value="122415">NPL    GJELB&#203;R    SH.A.</option>
+				<option value="115478">NPL &quot;STACIONI AUTOBUS&#203;VE GJILAN&quot; SH.A.</option>
+				<option value="200987">NPL EKO THERANDA SH.A.</option>
+				<option value="188779">NPL Stacioni i Autobus&#235;ve  Drenas  SH.A.</option>
+				<option value="197129">NPL STACIONI I AUTOBUS&#203;VE PRIZREN SH.A.</option>
+				<option value="111547">Ofruesi i sh&#235;rbimeve t&#235; navigacionit ajror - KANS</option>
+				<option value="113274">Oper. Sistemi,Trans.dhe Tregu- KOSTT   SH.A.</option>
+				<option value="113844">OPERIMI ME TRENA I HEKURUDHAVE T&#203; KOSOV&#203;S &quot;TRAINKOS&quot; SH.A.</option>
+				<option value="118727">OPŠTINA SEVERNA MITROVICA</option>
+				<option value="123186">ORGANI SHQYRTUES I PROKURIMIT</option>
+				<option value="128116">PANELI ZGJEDHOR P&#203;R ANKESA DHE PARASHTRESA</option>
+				<option value="111687">POLICIA E KOSOV&#203;S</option>
+				<option value="113093">POSTA E KOSOV&#203;S SH.A</option>
+				<option value="113202">QAK</option>
+				<option value="122896">QENDRA E SHENDETIT MENDOR - GJAKOV&#203;</option>
+				<option value="114392">QENDRA E SHENDETIT MENDOR - PEJ&#203;</option>
+				<option value="117929">QENDRA E SH&#203;NDETIT MENDOR DHE SHT&#203;PIA INTEGRUESE N&#203; BASHK&#203;SI MITROVIC&#203;</option>
+				<option value="114054">QENDRA E SH&#203;NDETIT MENDOR ME SHT&#203;PIT&#203; PER INT. N&#203; BASHK.-PRIZREN</option>
+				<option value="113716">QENDRA E SH&#203;NDETIT MENDOR-PRISHTIN&#203;</option>
+				<option value="112056">QENDRA E STUDENTEVE</option>
+				<option value="118585">QENDRA KLIN.STOMATOLOGJIKE</option>
+				<option value="111758">QENDRA KLINIKE UNIVERSITARE E KOSOVES</option>
+				<option value="111860">QENDRA KOMB&#203;TARE E KOSOV&#203;S P&#203;R TRANFUZIONIN E GJAKUT</option>
+				<option value="126777">QENDRA KRYESORE E MJEKSISE FAMILJARE</option>
+				<option value="147142">QENDRA MULTIFUNKSIONALE    SH.A.</option>
+				<option value="194943">QENDRA P&#203;R INTEGRIMIN DHE REHABILITIMIN E TE S&#203;MUARVE KRONIK-PSIKIATRIK -SHTIME (QIRSKP-SHTIME)</option>
+				<option value="115127">QENDRA PER SHENDET MENTAL -GJILAN</option>
+				<option value="114514">QENDRA SHENDETESORE MENTALE HAREJA</option>
+				<option value="113832">RADIO TELEVIZIONI I KOSOV&#203;S RTK</option>
+				<option value="111780">SH&#203;RBIMI KORREKTUES I KOSOV&#203;S</option>
+				<option value="120477">SHSKUK - SH&#203;RBIMI SPITALOR KLINIK UNIVERZITARE I KOSOV&#203;S</option>
+				<option value="180954">Skat Consulting Ltd Branch in Kosovo</option>
+				<option value="113830">SKUPSTINA OPSTINA GRACANICA</option>
+				<option value="115244">SPITALI   SHEIKH ZAYED</option>
+				<option value="113712">SPITALI FERIZAJ</option>
+				<option value="111892">SPITALI I P&#203;RGJITHSHEM - GJAKOV&#203;</option>
+				<option value="114615">SPITALI I P&#203;RGJITHSH&#203;M &quot;DR.SAMI HAXHIBEQIRI&quot; - MITROVIC&#203;</option>
+				<option value="114475">SPITALI I P&#203;RGJITHSH&#203;M GJILAN</option>
+				<option value="114350">Spitali i Pergjithshem- Pej&#235;</option>
+				<option value="114042">SPITALI REGJIONAL - PRIZREN</option>
+				<option value="115429">STACIONI I AUTOBUS&#203;VE   SH.A.</option>
+				<option value="180109">STACIONI I AUTOBUS&#203;VE SH.A.</option>
+				<option value="111957">TELEKOMI I KOSOV&#203;S   SH.A.</option>
+				<option value="187198">THESARI - MINISTRIA E FINANCAVE</option>
+				<option value="121523">Trep&#231;a -Nd&#235;rrmarrje n&#235; Administrim t&#235; AKP</option>
+				<option value="113469">Trep&#231;a SH.A.</option>
+				<option value="114614">UNIVERSITETI    HAXHI ZEKA    N&#203; PEJ&#203;</option>
+				<option value="114334">Universiteti    Isa Boletini   Mitrovic&#235;</option>
+				<option value="122321">UNIVERSITETI  UKSHIN HOTI</option>
+				<option value="112707">UNIVERSITETI I GJAKOV&#203;S   FEHMI AGANI</option>
+				<option value="112285">UNIVERSITETI I PRISHTIN&#203;S</option>
+				<option value="166591">UNIVERSITETI I SHKENCAVE T&#203; APLIKUARA N&#203; FERIZAJ</option>
+				<option value="116376">UNIVERSITETI PUBLIK   KADRI ZEKA</option>
+				<option value="111603">ZYRA E KRYEMINISTRIT</option>
+				<option value="111857">ZYRA E PRESIDENTIT T&#203; REPUBLIKES SE KOSOV&#203;S</option>
+				<option value="112686">ZYRA E RREGULLATORIT T&#203; ENERGJIS&#203;</option>
+				<option value="111627">ZYRA KOMB&#203;TARE E AUDITIMIT</option>
+
+			</select></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_NaruciteljId" type="checkbox" name="uiFilter$IsNull_NaruciteljId" /><label for="uiFilter_IsNull_NaruciteljId">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_NaruciteljId" type="checkbox" name="uiFilter$AddWithOr_NaruciteljId" /><label for="uiFilter_AddWithOr_NaruciteljId">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_NaruciteljId" type="checkbox" name="uiFilter$Negate_NaruciteljId" /><label for="uiFilter_Negate_NaruciteljId">Pa specifikuar</label></span>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Numri i publikimit:&nbsp;</td><td><input name="uiFilter$Txt_OznakaDokumenta" type="text" id="uiFilter_Txt_OznakaDokumenta" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_OznakaDokumenta" type="checkbox" name="uiFilter$IsNull_OznakaDokumenta" /><label for="uiFilter_IsNull_OznakaDokumenta">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_OznakaDokumenta" type="checkbox" name="uiFilter$AddWithOr_OznakaDokumenta" /><label for="uiFilter_AddWithOr_OznakaDokumenta">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_OznakaDokumenta" type="checkbox" name="uiFilter$Negate_OznakaDokumenta" /><label for="uiFilter_Negate_OznakaDokumenta">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_OznakaDokumenta" type="checkbox" name="uiFilter$AnyWord_OznakaDokumenta" /><label for="uiFilter_AnyWord_OznakaDokumenta">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_OznakaDokumenta" id="uiFilter_SelectTextMode_OznakaDokumenta" class="form-input-dropdown">
+				<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+				<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+				<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+				<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+			</select>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Lloji i dokumentit:&nbsp;</td><td><input name="uiFilter$Txt_NazivVrsteDokumenta" type="text" id="uiFilter_Txt_NazivVrsteDokumenta" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_NazivVrsteDokumenta" type="checkbox" name="uiFilter$IsNull_NazivVrsteDokumenta" /><label for="uiFilter_IsNull_NazivVrsteDokumenta">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_NazivVrsteDokumenta" type="checkbox" name="uiFilter$AddWithOr_NazivVrsteDokumenta" /><label for="uiFilter_AddWithOr_NazivVrsteDokumenta">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_NazivVrsteDokumenta" type="checkbox" name="uiFilter$Negate_NazivVrsteDokumenta" /><label for="uiFilter_Negate_NazivVrsteDokumenta">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_NazivVrsteDokumenta" type="checkbox" name="uiFilter$AnyWord_NazivVrsteDokumenta" /><label for="uiFilter_AnyWord_NazivVrsteDokumenta">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_NazivVrsteDokumenta" id="uiFilter_SelectTextMode_NazivVrsteDokumenta" class="form-input-dropdown">
+				<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+				<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+				<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+				<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+			</select>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Lënda e prokurimit / grupi:&nbsp;</td><td><input name="uiFilter$Txt_NazivEntiteta" type="text" id="uiFilter_Txt_NazivEntiteta" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_NazivEntiteta" type="checkbox" name="uiFilter$IsNull_NazivEntiteta" /><label for="uiFilter_IsNull_NazivEntiteta">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_NazivEntiteta" type="checkbox" name="uiFilter$AddWithOr_NazivEntiteta" /><label for="uiFilter_AddWithOr_NazivEntiteta">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_NazivEntiteta" type="checkbox" name="uiFilter$Negate_NazivEntiteta" /><label for="uiFilter_Negate_NazivEntiteta">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_NazivEntiteta" type="checkbox" name="uiFilter$AnyWord_NazivEntiteta" /><label for="uiFilter_AnyWord_NazivEntiteta">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_NazivEntiteta" id="uiFilter_SelectTextMode_NazivEntiteta" class="form-input-dropdown">
+				<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+				<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+				<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+				<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+			</select>&nbsp;</td>
+		</tr><tr>
+			<td align="right">FPP:&nbsp;</td><td><input name="uiFilter$Txt_CpvOznaka" type="text" id="uiFilter_Txt_CpvOznaka" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_CpvOznaka" type="checkbox" name="uiFilter$IsNull_CpvOznaka" /><label for="uiFilter_IsNull_CpvOznaka">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_CpvOznaka" type="checkbox" name="uiFilter$AddWithOr_CpvOznaka" /><label for="uiFilter_AddWithOr_CpvOznaka">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_CpvOznaka" type="checkbox" name="uiFilter$Negate_CpvOznaka" /><label for="uiFilter_Negate_CpvOznaka">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_CpvOznaka" type="checkbox" name="uiFilter$AnyWord_CpvOznaka" /><label for="uiFilter_AnyWord_CpvOznaka">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_CpvOznaka" id="uiFilter_SelectTextMode_CpvOznaka" class="form-input-dropdown">
+				<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+				<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+				<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+				<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+			</select>&nbsp;</td>
+		</tr><tr>
+			<td align="right">FPP - Përshkrimi:&nbsp;</td><td><input name="uiFilter$Txt_CpvNaziv" type="text" id="uiFilter_Txt_CpvNaziv" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_CpvNaziv" type="checkbox" name="uiFilter$IsNull_CpvNaziv" /><label for="uiFilter_IsNull_CpvNaziv">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_CpvNaziv" type="checkbox" name="uiFilter$AddWithOr_CpvNaziv" /><label for="uiFilter_AddWithOr_CpvNaziv">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_CpvNaziv" type="checkbox" name="uiFilter$Negate_CpvNaziv" /><label for="uiFilter_Negate_CpvNaziv">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_CpvNaziv" type="checkbox" name="uiFilter$AnyWord_CpvNaziv" /><label for="uiFilter_AnyWord_CpvNaziv">Ndonjë  fjali</label></span>&nbsp;<select name="uiFilter$SelectTextMode_CpvNaziv" id="uiFilter_SelectTextMode_CpvNaziv" class="form-input-dropdown">
+				<option value="Default">M&#235;nyra e k&#235;rkimit</option>
+				<option value="BeginningOfText">N&#235; fillim t&#235; tekstit</option>
+				<option selected="selected" value="AnywhereInText">Kudo n&#235; tekst</option>
+				<option value="ExactMatch">Ndeshje e sakt&#235;</option>
+
+			</select>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Data e Mbylljes:&nbsp;</td><td><span id="uiFilter_Calendar_RokZaDostavuPonuda"><input name="uiFilter$Calendar_RokZaDostavuPonuda$textBox" type="text" id="uiFilter_Calendar_RokZaDostavuPonuda_textBox" class="form-input-text" onchange="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_RokZaDostavuPonuda&#39;).TextChanged();" /><img id="uiFilter_Calendar_RokZaDostavuPonuda_image" onclick="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_RokZaDostavuPonuda&#39;).Show();" src="../Images/buttons/btn_sml_cln.png" alt=" ... " style="border-width:0px;vertical-align:text-bottom;cursor:pointer;" /><input name="uiFilter$Calendar_RokZaDostavuPonuda$hidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_hidden" /><input name="uiFilter$Calendar_RokZaDostavuPonuda$validateHidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_validateHidden" /><input name="uiFilter$Calendar_RokZaDostavuPonuda$enableHidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_enableHidden" value="true" /><div id="uiFilter_Calendar_RokZaDostavuPonuda_calendar" style="z-index:5001;position:absolute;display:none;float:left;"></div><div id="uiFilter_Calendar_RokZaDostavuPonuda_monthYear" style="z-index:5003;position:absolute;display:none;float:left;"></div></span></td><td><table cellspacing="0" cellpadding="0" border="0" style="border-width:0px;border-collapse:collapse;">
+				<tr>
+					<td id="uiFilter_Cell_RokZaDostavuPonuda_EndValue" style="white-space:nowrap;display:none;"><span> -  </span><span id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue"><input name="uiFilter$Calendar_RokZaDostavuPonuda_EndValue$textBox" type="text" id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_textBox" class="form-input-text" onchange="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_RokZaDostavuPonuda_EndValue&#39;).TextChanged();" /><img id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_image" onclick="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_RokZaDostavuPonuda_EndValue&#39;).Show();" src="../Images/buttons/btn_sml_cln.png" alt=" ... " style="border-width:0px;vertical-align:text-bottom;cursor:pointer;" /><input name="uiFilter$Calendar_RokZaDostavuPonuda_EndValue$hidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_hidden" /><input name="uiFilter$Calendar_RokZaDostavuPonuda_EndValue$validateHidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_validateHidden" /><input name="uiFilter$Calendar_RokZaDostavuPonuda_EndValue$enableHidden" type="hidden" id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_enableHidden" value="true" /><div id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_calendar" style="z-index:5001;position:absolute;display:none;float:left;"></div><div id="uiFilter_Calendar_RokZaDostavuPonuda_EndValue_monthYear" style="z-index:5003;position:absolute;display:none;float:left;"></div></span><span style="display:none;"><input id="uiFilter_IsValid_RokZaDostavuPonuda_EndValue" type="checkbox" name="uiFilter$IsValid_RokZaDostavuPonuda_EndValue" /></span></td><td><img src="../Images/buttons/btn_sml_gt.png" id="uiFilter_Toggle_RokZaDostavuPonuda_EndValue" border="0" onclick="uiFilter_ToggleControlVisibilityByButton(&#39;uiFilter_Cell_RokZaDostavuPonuda_EndValue&#39;, &#39;uiFilter_Toggle_RokZaDostavuPonuda_EndValue&#39;, &#39;uiFilter_IsValid_RokZaDostavuPonuda_EndValue&#39;); " width="20" height="20" style="cursor:pointer;" /></td><td><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_RokZaDostavuPonuda" type="checkbox" name="uiFilter$IsNull_RokZaDostavuPonuda" /><label for="uiFilter_IsNull_RokZaDostavuPonuda">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_RokZaDostavuPonuda" type="checkbox" name="uiFilter$AddWithOr_RokZaDostavuPonuda" /><label for="uiFilter_AddWithOr_RokZaDostavuPonuda">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_RokZaDostavuPonuda" type="checkbox" name="uiFilter$Negate_RokZaDostavuPonuda" /><label for="uiFilter_Negate_RokZaDostavuPonuda">Pa specifikuar</label></span>&nbsp;</td>
+				</tr>
+			</table></td>
+		</tr><tr>
+			<td align="right">Lloji i kontratës:&nbsp;</td><td><select name="uiFilter$Ddl_VrstaPredmetaNabaveId" id="uiFilter_Ddl_VrstaPredmetaNabaveId" class="form-input-dropdown" style="width:200px;">
+				<option selected="selected" value=""></option>
+				<option value="1">1 Furnizim</option>
+				<option value="2">2 Sh&#235;rbime</option>
+				<option value="9">3 Sh&#235;rbime k&#235;shilluese </option>
+				<option value="7">4 Shp&#235;rblimet (konkursit)</option>
+				<option value="3">5 Pune</option>
+				<option value="4">Utilities</option>
+
+			</select></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_VrstaPredmetaNabaveId" type="checkbox" name="uiFilter$IsNull_VrstaPredmetaNabaveId" /><label for="uiFilter_IsNull_VrstaPredmetaNabaveId">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_VrstaPredmetaNabaveId" type="checkbox" name="uiFilter$AddWithOr_VrstaPredmetaNabaveId" /><label for="uiFilter_AddWithOr_VrstaPredmetaNabaveId">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_VrstaPredmetaNabaveId" type="checkbox" name="uiFilter$Negate_VrstaPredmetaNabaveId" /><label for="uiFilter_Negate_VrstaPredmetaNabaveId">Pa specifikuar</label></span>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Vlera e kontratës:&nbsp;</td><td><select name="uiFilter$Ddl_TipNadmetanja_ID" id="uiFilter_Ddl_TipNadmetanja_ID" class="form-input-dropdown" style="width:200px;">
+				<option selected="selected" value=""></option>
+				<option value="1">1 Vler&#235; e madhe</option>
+				<option value="15">2 Vler&#235; e mesme</option>
+				<option value="2">3 Vler&#235; e ul&#235;t</option>
+				<option value="19">4 Vler&#235; minimale</option>
+				<option value="4">LPP nuk zbatohet</option>
+				<option value="20">Nuk &#235;sht&#235; p&#235;rcaktuar p&#235;r llojin e procedur&#235;s</option>
+				<option value="21">Shitje</option>
+				<option value="8">Vler&#235; e ul&#235;t, Kuotimit t&#235; &#199;mimit</option>
+
+			</select></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_TipNadmetanja_ID" type="checkbox" name="uiFilter$IsNull_TipNadmetanja_ID" /><label for="uiFilter_IsNull_TipNadmetanja_ID">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_TipNadmetanja_ID" type="checkbox" name="uiFilter$AddWithOr_TipNadmetanja_ID" /><label for="uiFilter_AddWithOr_TipNadmetanja_ID">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_TipNadmetanja_ID" type="checkbox" name="uiFilter$Negate_TipNadmetanja_ID" /><label for="uiFilter_Negate_TipNadmetanja_ID">Pa specifikuar</label></span>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Procedura:&nbsp;</td><td><select name="uiFilter$Ddl_PostupakNadmetanjaId" id="uiFilter_Ddl_PostupakNadmetanjaId" class="form-input-dropdown" style="width:200px;">
+				<option selected="selected" value=""></option>
+				<option value="1">1 Procedur&#235; e hapur</option>
+				<option value="2">2 Procedur&#235; e kufizuar</option>
+				<option value="3">4 Procedur&#235; konkurruese me negociata</option>
+				<option value="4">5 Procedur&#235; e negociuar  pa publikim t&#235; njoftimit t&#235; kontrat&#235;s </option>
+				<option value="6">3 Konkurs Projektimi (e hapur)</option>
+				<option value="7">3 Konkurs Projektimi (e kufizuar)</option>
+				<option value="10">6 Kuotim i &#199;mimit</option>
+				<option value="29">7 Procedur&#235; e Vler&#235;s Minimale</option>
+				<option value="32">Ankand publik</option>
+				<option value="33">Ofertave publike t&#235; mbyllura</option>
+				<option value="34">Shitje e aseteve p&#235;r Zyrtar&#235;t Publik</option>
+				<option value="36">Procedura e negociuar p&#235;r shitje</option>
+
+			</select></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_PostupakNadmetanjaId" type="checkbox" name="uiFilter$IsNull_PostupakNadmetanjaId" /><label for="uiFilter_IsNull_PostupakNadmetanjaId">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_PostupakNadmetanjaId" type="checkbox" name="uiFilter$AddWithOr_PostupakNadmetanjaId" /><label for="uiFilter_AddWithOr_PostupakNadmetanjaId">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_PostupakNadmetanjaId" type="checkbox" name="uiFilter$Negate_PostupakNadmetanjaId" /><label for="uiFilter_Negate_PostupakNadmetanjaId">Pa specifikuar</label></span>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Vlera e parashikuar:&nbsp;</td><td><input name="uiFilter$Txt_ProcijenjenaVrijednost" type="text" id="uiFilter_Txt_ProcijenjenaVrijednost" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td style="padding-left:20px;"><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_ProcijenjenaVrijednost" type="checkbox" name="uiFilter$IsNull_ProcijenjenaVrijednost" /><label for="uiFilter_IsNull_ProcijenjenaVrijednost">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_ProcijenjenaVrijednost" type="checkbox" name="uiFilter$AddWithOr_ProcijenjenaVrijednost" /><label for="uiFilter_AddWithOr_ProcijenjenaVrijednost">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_ProcijenjenaVrijednost" type="checkbox" name="uiFilter$Negate_ProcijenjenaVrijednost" /><label for="uiFilter_Negate_ProcijenjenaVrijednost">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_ProcijenjenaVrijednost" type="checkbox" name="uiFilter$AnyWord_ProcijenjenaVrijednost" /><label for="uiFilter_AnyWord_ProcijenjenaVrijednost">Ndonjë  fjali</label></span>&nbsp;</td>
+		</tr><tr>
+			<td align="right">Data e publikimit:&nbsp;</td><td><span id="uiFilter_Calendar_DatumObjave"><input name="uiFilter$Calendar_DatumObjave$textBox" type="text" id="uiFilter_Calendar_DatumObjave_textBox" class="form-input-text" onchange="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_DatumObjave&#39;).TextChanged();" /><img id="uiFilter_Calendar_DatumObjave_image" onclick="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_DatumObjave&#39;).Show();" src="../Images/buttons/btn_sml_cln.png" alt=" ... " style="border-width:0px;vertical-align:text-bottom;cursor:pointer;" /><input name="uiFilter$Calendar_DatumObjave$hidden" type="hidden" id="uiFilter_Calendar_DatumObjave_hidden" /><input name="uiFilter$Calendar_DatumObjave$validateHidden" type="hidden" id="uiFilter_Calendar_DatumObjave_validateHidden" /><input name="uiFilter$Calendar_DatumObjave$enableHidden" type="hidden" id="uiFilter_Calendar_DatumObjave_enableHidden" value="true" /><div id="uiFilter_Calendar_DatumObjave_calendar" style="z-index:5001;position:absolute;display:none;float:left;"></div><div id="uiFilter_Calendar_DatumObjave_monthYear" style="z-index:5003;position:absolute;display:none;float:left;"></div></span></td><td><table cellspacing="0" cellpadding="0" border="0" style="border-width:0px;border-collapse:collapse;">
+				<tr>
+					<td id="uiFilter_Cell_DatumObjave_EndValue" style="white-space:nowrap;display:none;"><span> -  </span><span id="uiFilter_Calendar_DatumObjave_EndValue"><input name="uiFilter$Calendar_DatumObjave_EndValue$textBox" type="text" id="uiFilter_Calendar_DatumObjave_EndValue_textBox" class="form-input-text" onchange="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_DatumObjave_EndValue&#39;).TextChanged();" /><img id="uiFilter_Calendar_DatumObjave_EndValue_image" onclick="CalendarPopup_FindCalendar(&#39;uiFilter_Calendar_DatumObjave_EndValue&#39;).Show();" src="../Images/buttons/btn_sml_cln.png" alt=" ... " style="border-width:0px;vertical-align:text-bottom;cursor:pointer;" /><input name="uiFilter$Calendar_DatumObjave_EndValue$hidden" type="hidden" id="uiFilter_Calendar_DatumObjave_EndValue_hidden" /><input name="uiFilter$Calendar_DatumObjave_EndValue$validateHidden" type="hidden" id="uiFilter_Calendar_DatumObjave_EndValue_validateHidden" /><input name="uiFilter$Calendar_DatumObjave_EndValue$enableHidden" type="hidden" id="uiFilter_Calendar_DatumObjave_EndValue_enableHidden" value="true" /><div id="uiFilter_Calendar_DatumObjave_EndValue_calendar" style="z-index:5001;position:absolute;display:none;float:left;"></div><div id="uiFilter_Calendar_DatumObjave_EndValue_monthYear" style="z-index:5003;position:absolute;display:none;float:left;"></div></span><span style="display:none;"><input id="uiFilter_IsValid_DatumObjave_EndValue" type="checkbox" name="uiFilter$IsValid_DatumObjave_EndValue" /></span></td><td><img src="../Images/buttons/btn_sml_gt.png" id="uiFilter_Toggle_DatumObjave_EndValue" border="0" onclick="uiFilter_ToggleControlVisibilityByButton(&#39;uiFilter_Cell_DatumObjave_EndValue&#39;, &#39;uiFilter_Toggle_DatumObjave_EndValue&#39;, &#39;uiFilter_IsValid_DatumObjave_EndValue&#39;); " width="20" height="20" style="cursor:pointer;" /></td><td><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_DatumObjave" type="checkbox" name="uiFilter$IsNull_DatumObjave" /><label for="uiFilter_IsNull_DatumObjave">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_DatumObjave" type="checkbox" name="uiFilter$AddWithOr_DatumObjave" /><label for="uiFilter_AddWithOr_DatumObjave">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_DatumObjave" type="checkbox" name="uiFilter$Negate_DatumObjave" /><label for="uiFilter_Negate_DatumObjave">Pa specifikuar</label></span>&nbsp;</td>
+				</tr>
+			</table></td>
+		</tr><tr style="display:none;">
+			<td align="right">:&nbsp;</td><td><input name="uiFilter$Txt_UstrojstvenaJedinicaId" type="text" id="uiFilter_Txt_UstrojstvenaJedinicaId" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td><table cellspacing="0" cellpadding="0" border="0" style="border-width:0px;border-collapse:collapse;">
+				<tr>
+					<td id="uiFilter_Cell_UstrojstvenaJedinicaId_EndValue" style="white-space:nowrap;display:none;"><span> -  </span><input name="uiFilter$Txt_UstrojstvenaJedinicaId_EndValue" type="text" id="uiFilter_Txt_UstrojstvenaJedinicaId_EndValue" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /><span style="display:none;"><input id="uiFilter_IsValid_UstrojstvenaJedinicaId_EndValue" type="checkbox" name="uiFilter$IsValid_UstrojstvenaJedinicaId_EndValue" /></span></td><td><img src="../Images/buttons/btn_sml_gt.png" id="uiFilter_Toggle_UstrojstvenaJedinicaId_EndValue" border="0" onclick="uiFilter_ToggleControlVisibilityByButton(&#39;uiFilter_Cell_UstrojstvenaJedinicaId_EndValue&#39;, &#39;uiFilter_Toggle_UstrojstvenaJedinicaId_EndValue&#39;, &#39;uiFilter_IsValid_UstrojstvenaJedinicaId_EndValue&#39;); " width="20" height="20" style="cursor:pointer;" /></td><td><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_UstrojstvenaJedinicaId" type="checkbox" name="uiFilter$IsNull_UstrojstvenaJedinicaId" /><label for="uiFilter_IsNull_UstrojstvenaJedinicaId">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_UstrojstvenaJedinicaId" type="checkbox" name="uiFilter$AddWithOr_UstrojstvenaJedinicaId" /><label for="uiFilter_AddWithOr_UstrojstvenaJedinicaId">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_UstrojstvenaJedinicaId" type="checkbox" name="uiFilter$Negate_UstrojstvenaJedinicaId" /><label for="uiFilter_Negate_UstrojstvenaJedinicaId">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_UstrojstvenaJedinicaId" type="checkbox" name="uiFilter$AnyWord_UstrojstvenaJedinicaId" /><label for="uiFilter_AnyWord_UstrojstvenaJedinicaId">Ndonjë  fjali</label></span>&nbsp;</td>
+				</tr>
+			</table></td>
+		</tr><tr style="display:none;">
+			<td align="right">:&nbsp;</td><td><input name="uiFilter$Txt_ObjektId" type="text" id="uiFilter_Txt_ObjektId" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /></td><td><table cellspacing="0" cellpadding="0" border="0" style="border-width:0px;border-collapse:collapse;">
+				<tr>
+					<td id="uiFilter_Cell_ObjektId_EndValue" style="white-space:nowrap;display:none;"><span> -  </span><input name="uiFilter$Txt_ObjektId_EndValue" type="text" id="uiFilter_Txt_ObjektId_EndValue" class="form-input-text" onkeypress="return uiFilter_CheckChar(event);" style="width:200px;" /><span style="display:none;"><input id="uiFilter_IsValid_ObjektId_EndValue" type="checkbox" name="uiFilter$IsValid_ObjektId_EndValue" /></span></td><td><img src="../Images/buttons/btn_sml_gt.png" id="uiFilter_Toggle_ObjektId_EndValue" border="0" onclick="uiFilter_ToggleControlVisibilityByButton(&#39;uiFilter_Cell_ObjektId_EndValue&#39;, &#39;uiFilter_Toggle_ObjektId_EndValue&#39;, &#39;uiFilter_IsValid_ObjektId_EndValue&#39;); " width="20" height="20" style="cursor:pointer;" /></td><td><span class="form-input-whiteborder" title="Kërko për të dhënat nuk përmbajnë fjalën e dhënë apo fraza." style="white-space:nowrap;"><input id="uiFilter_IsNull_ObjektId" type="checkbox" name="uiFilter$IsNull_ObjektId" /><label for="uiFilter_IsNull_ObjektId">Nuk ka</label></span>&nbsp;<span class="form-input-whiteborder" title="Zgjedhje"><input id="uiFilter_AddWithOr_ObjektId" type="checkbox" name="uiFilter$AddWithOr_ObjektId" /><label for="uiFilter_AddWithOr_ObjektId">Ose</label></span>&nbsp;<span class="form-input-whiteborder" title="Invertimin kriteret" style="white-space:nowrap;"><input id="uiFilter_Negate_ObjektId" type="checkbox" name="uiFilter$Negate_ObjektId" /><label for="uiFilter_Negate_ObjektId">Pa specifikuar</label></span>&nbsp;<span class="form-input-whiteborder" title="Shpall shenimet  cilat permbajn ndonjë  prej të caktuar " style="white-space:nowrap;"><input id="uiFilter_AnyWord_ObjektId" type="checkbox" name="uiFilter$AnyWord_ObjektId" /><label for="uiFilter_AnyWord_ObjektId">Ndonjë  fjali</label></span>&nbsp;</td>
+				</tr>
+			</table></td>
+		</tr>
+	</table></span></td>
+</tr>
+
+                            <tr id="uiTraziButton" style="display:;">
+	<td colspan="3">
+                                    <a class="PreglediTraziButton" onclick="document.getElementById('uiFilterSearch').click();"
+                                        href="#"><span>Kërko</span></a>
+                                </td>
+</tr>
+
+                            <tr id="uiHrRow" style="display:;">
+</tr>
+
+                            <tr>
+                                <td id="uiViewCell" colspan="3" align="left">
+                                <script type="text/javascript">function uiView_DoAction(actionIndex) { document.getElementById('uiView_txtSelectedAction').value = actionIndex; document.getElementById('uiView_btnDoAction').click(); }</script><span id="uiView" SelectedItemStyle-Color="Red" style="display:inline-block;width:100%;"><table cellspacing="1" cellpadding="2" border="0" style="border-width:0px;width:100%;">
+	<tr>
+		<td><script type="text/javascript" language="javascript">function gridResults__GetVal(){return Idom3_BoundDataGrid_GetSelectedValue("gridResults__SelectedValues"); } </script>
+		<table class="DataGrid sortBtnContainer" cellspacing="0" rules="all" ondblclick="uiView_DoAction(4);" border="1" id="uiView_gridResults" style="width:100%;border-collapse:collapse;">
+			<tr class="datagrid-header" style="white-space:nowrap;">
+				<td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl00&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'></span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl01&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'></span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl02&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Numrin e prokurimit</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl03&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Autoriteti kontraktues</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl04&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Numri i publikimit</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl05&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Lloji i dokumentit</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl06&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Lënda e prokurimit / grupi</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl07&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>FPP</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl08&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>FPP - Përshkrimi</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl09&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Lloji i kontratës</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl10&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Vlera e kontratës</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl11&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Procedura</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl12&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Vlera e parashikuar</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl13&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Data e Mbylljes</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl14&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Data e publikimit &#9660;</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl15&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Ri-Tenderim</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl16&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Vendi i liferimit</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl17&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Ankand</span></a></td><td><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl02$ctl18&#39;,&#39;&#39;)"><span class='searchview-nowrap-nodecoration'>Statusi i procedurës</span></a></td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301624" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301624&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301624&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301624' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="660-26-8103-1-2-1">660-26-8103-1-2-1</td><td title="KOMUNA E KLLOKOTIT">KOMUNA E KLLOKOTIT</td><td title="2026/660-26-8103-1-2-1/B05-0020677">2026/660-26-8103-1-2-1/B05-0020677</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Shenjezimi  me sinjalistik rrugore,horizentale dhe vertikale në territotin e Komunës">Shenjezimi  me sinjalistik rrugore,horizentale dhe vertikale në territotin e Komunës</td><td title="93000000-8">93000000-8</td><td title="Shërbime te ndryshme">Shërbime te ndryshme</td><td title="1 Furnizim">1 Furnizim</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="10,000.00" style="text-align:right;">10,000.00</td><td title="13.10.2026 13:00">13.10.2026 13:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Komuna e Kllokotit">Komuna e Kllokotit</td><td title="Jo">Jo</td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300346" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300346&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300346&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300346' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="217-26-5936-5-5-8">217-26-5936-5-5-8</td><td title="MINISTRIA E MBROJTJES">MINISTRIA E MBROJTJES</td><td title="2026/217-26-5936-5-5-8/B52-0020588">2026/217-26-5936-5-5-8/B52-0020588</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Furnizim me Inventarë për nevojat e MM-së dhe FSK-së">Furnizim me Inventarë për nevojat e MM-së dhe FSK-së</td><td title="36140000-4">36140000-4</td><td title="Mobile dhe pajisje te ndryshme">Mobile dhe pajisje te ndryshme</td><td title="1 Furnizim">1 Furnizim</td><td title="Nuk është përcaktuar për llojin e procedurës">Nuk është përcaktuar për llojin e procedurës</td><td title="Mini-tender">Mini-tender</td><td title="131,000.00" style="text-align:right;">131,000.00</td><td title="11.08.2026 14:00">11.08.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Kazerma ‘’Adem Jashari’’10000,  PRISHTINË">Kazerma ‘’Adem Jashari’’10000,  PRISHTINË</td><td></td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301631" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301631&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301631&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301631' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="624-26-8104-2-3-6">624-26-8104-2-3-6</td><td title="KOMUNA SUHAREKË">KOMUNA SUHAREKË</td><td title="2026/624-26-8104-2-3-6/B05-0020679">2026/624-26-8104-2-3-6/B05-0020679</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Mirmbajtja e objektit të QPS,ndrrimi i dyerve të brendshme">Mirmbajtja e objektit të QPS,ndrrimi i dyerve të brendshme</td><td title="93000000-8">93000000-8</td><td title="Shërbime te ndryshme">Shërbime te ndryshme</td><td title="2 Shërbime">2 Shërbime</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="2,250.00" style="text-align:right;">2,250.00</td><td title="29.09.2026 14:00">29.09.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Komuna Suharekë">Komuna Suharekë</td><td></td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300347" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300347&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300347&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300347' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="214/91500-26-7919-1-4-7">214/91500-26-7919-1-4-7</td><td title="AKADEMIA E KOSOVËS PËR SIGURI PUBLIKE">AKADEMIA E KOSOVËS PËR SIGURI PUBLIKE</td><td title="2026/214/91500-26-7919-1-4-7/B52-0020589">2026/214/91500-26-7919-1-4-7/B52-0020589</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Furnizim me klimë">Furnizim me klimë</td><td title="31000000-6">31000000-6</td><td title="Makineri elektrike, aparat, pajisje dhe konsum">Makineri elektrike, aparat, pajisje dhe konsum</td><td title="1 Furnizim">1 Furnizim</td><td title="4 Vlerë minimale">4 Vlerë minimale</td><td title="7 Procedurë e Vlerës Minimale">7 Procedurë e Vlerës Minimale</td><td title="990.00" style="text-align:right;">990.00</td><td title="21.09.2026 14:00">21.09.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td></td><td></td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301636" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301636&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301636&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301636' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="242-26-8121-2-3-6">242-26-8121-2-3-6</td><td title="UNIVERSITETI I PRISHTINËS">UNIVERSITETI I PRISHTINËS</td><td title="2026/242-26-8121-2-3-6/B05-0020680">2026/242-26-8121-2-3-6/B05-0020680</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="“Organizimi i lendes se notit për FEFS-Ri tender”">“Organizimi i lendes se notit për FEFS-Ri tender”</td><td title="93000000-8">93000000-8</td><td title="Shërbime te ndryshme">Shërbime te ndryshme</td><td title="2 Shërbime">2 Shërbime</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="7,000.00" style="text-align:right;">7,000.00</td><td title="02.10.2026 13:30">02.10.2026 13:30</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Fakultetin e Edukimit Fizik dhe të Sportit – Prishtine">Fakultetin e Edukimit Fizik dhe të Sportit – Prishtine</td><td></td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300349" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300349&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300349&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300349' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="635-26-6828-5-2-1">635-26-6828-5-2-1</td><td title="KOMUNA E PEJES">KOMUNA E PEJES</td><td title="2026/635-26-6828-5-2-1/B52-0020590">2026/635-26-6828-5-2-1/B52-0020590</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Ndërtimi i mureve mbrojtëse kundër rrëshqitjes së dheut në lagjet Dardania, Kapeshnica dhe Xhemajl Kada në Komunën e Pejës">Ndërtimi i mureve mbrojtëse kundër rrëshqitjes së dheut në lagjet Dardania, Kapeshnica dhe Xhemajl Kada në Komunën e Pejës</td><td title="45000000-7">45000000-7</td><td title="Pune ndërtimi">Pune ndërtimi</td><td title="5 Pune">5 Pune</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="150,929.00" style="text-align:right;">150,929.00</td><td title="08.09.2026 13:30">08.09.2026 13:30</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Ne Komunen e Pejes">Ne Komunen e Pejes</td><td title="Jo">Jo</td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301639" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301639&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301639&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301639' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="207-26-7794-5-2-1">207-26-7794-5-2-1</td><td title="Ministria e Kulturës dhe Turizmit">Ministria e Kulturës dhe Turizmit</td><td title="2026/207-26-7794-5-2-1/B05-0020682">2026/207-26-7794-5-2-1/B05-0020682</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Renovimi i sallës alternative për nevojat e funksionimit të Teatrit &#39;&#39;Adriana&#39;&#39; në Ferizaj">Renovimi i sallës alternative për nevojat e funksionimit të Teatrit ''Adriana'' në Ferizaj</td><td title="45000000-7">45000000-7</td><td title="Pune ndërtimi">Pune ndërtimi</td><td title="5 Pune">5 Pune</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="40,000.00" style="text-align:right;">40,000.00</td><td title="16.10.2026 14:00">16.10.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Ferizaj">Ferizaj</td><td title="Jo">Jo</td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300352" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300352&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300352&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300352' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="613-26-7441-2-3-6">613-26-7441-2-3-6</td><td title="KUVENDI KOMUNAL LIPIJAN">KUVENDI KOMUNAL LIPIJAN</td><td title="2026/613-26-7441-2-3-6/B10-0020591">2026/613-26-7441-2-3-6/B10-0020591</td><td title="B10 Njoftimi per anulimin e aktivitetit te prokurimit">B10 Njoftimi per anulimin e aktivitetit te prokurimit</td><td title="Transportimi i  nxenësve në relacionin Dobrajë e vogël deri në SHFMU    Dy deshmoret     Dobrajë e Madhe dhe anasjelltas">Transportimi i  nxenësve në relacionin Dobrajë e vogël deri në SHFMU    Dy deshmoret     Dobrajë e Madhe dhe anasjelltas</td><td title="60116100-5">60116100-5</td><td title="Transporti i udhëtarëve i pa planifikuar (1)">Transporti i udhëtarëve i pa planifikuar (1)</td><td title="2 Shërbime">2 Shërbime</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="4,000.00" style="text-align:right;">4,000.00</td><td title="14.09.2026 14:00">14.09.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Transporti i nxënësve në relacionin Dobrajë e Vogël – SHFMU “Dy Dëshmorët”, Dobrajë e Madhe. Pikënisja e transportit është nga lagjja e Jasharëve. Orari i transportit   nisja në ora 12  40, ndërsa kthimi në ora 17  00.">Transporti i nxënësve në relacionin Dobrajë e Vogël – SHFMU “Dy Dëshmorët”, Dobrajë e Madhe. Pikënisja e transportit është nga lagjja e Jasharëve. Orari i transportit   nisja në ora 12  40, ndërsa kthimi në ora 17  00.</td><td></td><td title="Anuluar">Anuluar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301652" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301652&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301652&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301652' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="632-26-6618-2-2-1">632-26-6618-2-2-1</td><td title="KOMUNA E GJAKOVËS">KOMUNA E GJAKOVËS</td><td title="2026/632-26-6618-2-2-1/B52-0020684">2026/632-26-6618-2-2-1/B52-0020684</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Pastrimi dhe larja e veturave zyrtare">Pastrimi dhe larja e veturave zyrtare</td><td title="34113000-2">34113000-2</td><td title="Vetura 4-rroteshe">Vetura 4-rroteshe</td><td title="2 Shërbime">2 Shërbime</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="10,906.00" style="text-align:right;">10,906.00</td><td title="01.09.2026 13:30">01.09.2026 13:30</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Shërbimet e pastrimit dhe larjes së veturave zyrtare do të kryhet në punëtorin e Operatorit Ekonomik i cili shpërblehet me kontratë.">Shërbimet e pastrimit dhe larjes së veturave zyrtare do të kryhet në punëtorin e Operatorit Ekonomik i cili shpërblehet me kontratë.</td><td title="Jo">Jo</td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300354" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300354&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300354&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300354' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="622-26-4863-5-2-5">622-26-4863-5-2-5</td><td title="KUVENDI KOMUNAL I PRIZRENIT">KUVENDI KOMUNAL I PRIZRENIT</td><td title="2026/622-26-4863-5-2-5/B08-0020592">2026/622-26-4863-5-2-5/B08-0020592</td><td title="B08 Njoftim për dhënie të kontratës">B08 Njoftim për dhënie të kontratës</td><td title="Ndërtimi dhe restaurimi i kullës në Gjonaj (Komuna dhe Qrtk) Punë shtesë">Ndërtimi dhe restaurimi i kullës në Gjonaj (Komuna dhe Qrtk) Punë shtesë</td><td title="45110000-1">45110000-1</td><td title=" Prishje ndërtimi dhe shkatërrim të punës dhe pune te largimit te dheut"> Prishje ndërtimi dhe shkatërrim të punës dhe pune te largimit te dheut</td><td title="5 Pune">5 Pune</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="5 Procedurë e negociuar  pa publikim të njoftimit të kontratës ">5 Procedurë e negociuar  pa publikim të njoftimit të kontratës </td><td title="14,205.36" style="text-align:right;">14,205.36</td><td title="10.09.2026 11:00">10.09.2026 11:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Gjonaj Has">Gjonaj Has</td><td></td><td title="Ne kontraktim">Ne kontraktim</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301671" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301671&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301671&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301671' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="242-26-8003-1-3-6">242-26-8003-1-3-6</td><td title="UNIVERSITETI I PRISHTINËS">UNIVERSITETI I PRISHTINËS</td><td title="2026/242-26-8003-1-3-6/B05-0020686">2026/242-26-8003-1-3-6/B05-0020686</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Blerja  e  Librave dhe pikturave për  Fakultetin Filozofik">Blerja  e  Librave dhe pikturave për  Fakultetin Filozofik</td><td title="22111000-1">22111000-1</td><td title="Libra shkollor">Libra shkollor</td><td title="1 Furnizim">1 Furnizim</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="5,000.00" style="text-align:right;">5,000.00</td><td title="30.09.2026 13:00">30.09.2026 13:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="UP- Fakulteti  Filozofik">UP- Fakulteti  Filozofik</td><td></td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300356" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300356&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300356&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300356' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="220-26-6400-1-1-1">220-26-6400-1-1-1</td><td title="SHSKUK - SHËRBIMI SPITALOR KLINIK UNIVERZITARE I KOSOVËS">SHSKUK - SHËRBIMI SPITALOR KLINIK UNIVERZITARE I KOSOVËS</td><td title="2026/220-26-6400-1-1-1/B08-0020593">2026/220-26-6400-1-1-1/B08-0020593</td><td title="B08 Njoftim për dhënie të kontratës">B08 Njoftim për dhënie të kontratës</td><td title="Furnizim me Barna nga LE për SHSKUK-061; Lëndët e prokurimit - chloropyramine-Lot 1, aciclovir-Lot 2, aciclovir-Lot 3, metoprolol-Lot 4, aminophylline-Lot 5, lidocaine + epinephrine (adrenaline)-Lot 6, epinephrine (adrenaline)-Lot 7, indacaterol-Lot 8, phytomenadione-Lot 9, diclofenac-Lot 10">Furnizim me Barna nga LE për SHSKUK-061; Lëndët e prokurimit - chloropyramine-Lot 1, aciclovir-Lot 2, aciclovir-Lot 3, metoprolol-Lot 4, aminophylline-Lot 5, lidocaine + epinephrine (adrenaline)-Lot 6, epinephrine (adrenaline)-Lot 7, indacaterol-Lot 8, phytomenadione-Lot 9, diclofenac-Lot 10</td><td title="33000000-0">33000000-0</td><td title="Pajisje mjekësore dhe laboratorike, pajisje optike dhe precize, sahat dhe orë, farmaceutike dhe konsume mjekësore te ngjashme">Pajisje mjekësore dhe laboratorike, pajisje optike dhe precize, sahat dhe orë, farmaceutike dhe konsume mjekësore te ngjashme</td><td title="1 Furnizim">1 Furnizim</td><td title="1 Vlerë e madhe">1 Vlerë e madhe</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="194,468.86" style="text-align:right;">194,468.86</td><td title="27.08.2026 12:00">27.08.2026 12:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="SHSKUK">SHSKUK</td><td title="Jo">Jo</td><td title="Ne kontraktim">Ne kontraktim</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301682" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301682&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301682&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301682' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="201/13300-26-6605-5-5-8">201/13300-26-6605-5-5-8</td><td title="Dogana e Kosovës">Dogana e Kosovës</td><td title="2026/201/13300-26-6605-5-5-8/B52-0020687">2026/201/13300-26-6605-5-5-8/B52-0020687</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Furnizim me PC All In One - Model III më i avancuar">Furnizim me PC All In One - Model III më i avancuar</td><td title="30236000-2">30236000-2</td><td title="Pajisje IT">Pajisje IT</td><td title="1 Furnizim">1 Furnizim</td><td title="Nuk është përcaktuar për llojin e procedurës">Nuk është përcaktuar për llojin e procedurës</td><td title="Mini-tender">Mini-tender</td><td title="25,000.00" style="text-align:right;">25,000.00</td><td title="21.08.2026 14:00">21.08.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Drejtoria e Doganës, Lagjja Kalabri, Rr. Rexhep Krasniqi 10.000 Prishtinë, Republika e Kosovës">Drejtoria e Doganës, Lagjja Kalabri, Rr. Rexhep Krasniqi 10.000 Prishtinë, Republika e Kosovës</td><td></td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300371" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300371&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300371&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300371' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="217-26-6526-1-2-1">217-26-6526-1-2-1</td><td title="MINISTRIA E MBROJTJES">MINISTRIA E MBROJTJES</td><td title="2026/217-26-6526-1-2-1/B52-0020595">2026/217-26-6526-1-2-1/B52-0020595</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="&#39;&#39;Furnizim me pajisje për IGJ dhe ZMM&#39;&#39; për nevojat e MM-së">''Furnizim me pajisje për IGJ dhe ZMM'' për nevojat e MM-së</td><td title="28633200-0">28633200-0</td><td title="Pajisje">Pajisje</td><td title="1 Furnizim">1 Furnizim</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="28,340.00" style="text-align:right;">28,340.00</td><td title="02.09.2026 14:00">02.09.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Ministria e Mbrojtjes">Ministria e Mbrojtjes</td><td title="Jo">Jo</td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301692" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301692&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301692&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301692' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="647-26-5254-5-5-8">647-26-5254-5-5-8</td><td title="OPŠTINA SEVERNA MITROVICA">OPŠTINA SEVERNA MITROVICA</td><td title="2026/647-26-5254-5-5-8/B52-0020688">2026/647-26-5254-5-5-8/B52-0020688</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="“Blerja e Teknologjise informative  në shkollat e arsimit të mesem të lart Mihajlo Petrovic Alas dhe High school Mitrovica">“Blerja e Teknologjise informative  në shkollat e arsimit të mesem të lart Mihajlo Petrovic Alas dhe High school Mitrovica</td><td title="30000000-9">30000000-9</td><td title="Furnizime dhe pajisje për zyra dhe makineri informatike">Furnizime dhe pajisje për zyra dhe makineri informatike</td><td title="5 Pune">5 Pune</td><td title="Nuk është përcaktuar për llojin e procedurës">Nuk është përcaktuar për llojin e procedurës</td><td title="Mini-tender">Mini-tender</td><td title="261,458.00" style="text-align:right;">261,458.00</td><td title="13.08.2026 13:30">13.08.2026 13:30</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Në shkollat e arsimit të mesem të lart Mihajlo Petrovic Alas dhe High school Mitrovica në Mitrovicën Veriore">Në shkollat e arsimit të mesem të lart Mihajlo Petrovic Alas dhe High school Mitrovica në Mitrovicën Veriore</td><td></td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300392" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300392&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300392&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300392' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="KEK-26-6921-5-3-6">KEK-26-6921-5-3-6</td><td title="KORPORATA ENERGJETIKE E KOSOVES sh.a.">KORPORATA ENERGJETIKE E KOSOVES sh.a.</td><td title="2026/KEK-26-6921-5-3-6/B52-0020596">2026/KEK-26-6921-5-3-6/B52-0020596</td><td title="B52 Njoftimi për nënshkrimin e kontratës">B52 Njoftimi për nënshkrimin e kontratës</td><td title="Shamotimi i siperfaqeve anësore te brenerave te linjitit ne kaldajen B1">Shamotimi i siperfaqeve anësore te brenerave te linjitit ne kaldajen B1</td><td title="45251100-2">45251100-2</td><td title="Pune ndërtimore për termocentralet">Pune ndërtimore për termocentralet</td><td title="5 Pune">5 Pune</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="9,782.50" style="text-align:right;">9,782.50</td><td title="28.08.2026 12:00">28.08.2026 12:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="TC Kosova B">TC Kosova B</td><td></td><td title="Kontraktuar">Kontraktuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301694" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301694&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301694&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301694' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="12997  12998-26-8100-1-3-6">12997  12998-26-8100-1-3-6</td><td title="Trepça SH.A.">Trepça SH.A.</td><td title="2026/12997  12998-26-8100-1-3-6/B05-0020689">2026/12997  12998-26-8100-1-3-6/B05-0020689</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Furnizim me kushineta për pompa dhe elektromotor">Furnizim me kushineta për pompa dhe elektromotor</td><td title="29122000-0">29122000-0</td><td title="Pompa">Pompa</td><td title="1 Furnizim">1 Furnizim</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="9,950.00" style="text-align:right;">9,950.00</td><td title="05.10.2026 13:00">05.10.2026 13:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Miniera me Flotacion Stanterg">Miniera me Flotacion Stanterg</td><td></td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300395" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300395&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300395&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300395' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="217-26-7896-2-2-1">217-26-7896-2-2-1</td><td title="MINISTRIA E MBROJTJES">MINISTRIA E MBROJTJES</td><td title="2026/217-26-7896-2-2-1/B05-0020597">2026/217-26-7896-2-2-1/B05-0020597</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Ritender-Shërbimet e mirëmbajtjes së gjeneratorëve për nevojat e MM-së dhe FSK-së">Ritender-Shërbimet e mirëmbajtjes së gjeneratorëve për nevojat e MM-së dhe FSK-së</td><td title="93000000-8">93000000-8</td><td title="Shërbime te ndryshme">Shërbime te ndryshme</td><td title="2 Shërbime">2 Shërbime</td><td title="2 Vlerë e mesme">2 Vlerë e mesme</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="62,000.00" style="text-align:right;">62,000.00</td><td title="15.10.2026 14:00">15.10.2026 14:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Po">Po</td><td title="Kazerma ‘’Adem Jashari’’10000,  PRISHTINË">Kazerma ‘’Adem Jashari’’10000,  PRISHTINË</td><td title="Jo">Jo</td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="font-default" id="uiView_gridResults_Row_4301712" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4301712&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301712&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4301712' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="653-26-7259-2-1-1">653-26-7259-2-1-1</td><td title="KOMUNA E KAMENICËS">KOMUNA E KAMENICËS</td><td title="2026/653-26-7259-2-1-1/B54-0020690">2026/653-26-7259-2-1-1/B54-0020690</td><td title="B54 Formulari standard per korrigjimin e gabimeve ne njoftimet e publikuara">B54 Formulari standard per korrigjimin e gabimeve ne njoftimet e publikuara</td><td title="Mirëmbajtja e objekteve administrative">Mirëmbajtja e objekteve administrative</td><td title="93000000-8">93000000-8</td><td title="Shërbime te ndryshme">Shërbime te ndryshme</td><td title="2 Shërbime">2 Shërbime</td><td title="1 Vlerë e madhe">1 Vlerë e madhe</td><td title="1 Procedurë e hapur">1 Procedurë e hapur</td><td title="300,000.00" style="text-align:right;">300,000.00</td><td title="13.10.2026 13:00">13.10.2026 13:00</td><td title="24.09.2026 00:00">24.09.2026</td><td title="Jo">Jo</td><td title="Objektet e Komunës së Kamenicës">Objektet e Komunës së Kamenicës</td><td title="Jo">Jo</td><td title="Publikuar">Publikuar</td>
+			</tr><tr class="parni" id="uiView_gridResults_Row_4300401" onmousedown="uiView_gridResults_OnClick(event, this, &#39;4300401&#39;);" style="cursor:pointer;">
+				<td title="&lt;a href=&#39;https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300401&#39; class=&#39;DetailsBtn&#39; target=&#39;_BLANK&#39; title=&#39;Detajet&#39;>&lt;/a>"><a href='https://e-prokurimi.rks-gov.net/SPIN_PROD/APPLICATION/IPN/DocumentManagement/DokumentPodaciFrm.aspx?id=4300401' class='DetailsBtn' target='_BLANK' title='Detajet'></a></td><td title="&lt;a class=&#39;FavouritesNonactive&#39; title=&#39;Morate se prijaviti da biste dodali u favorite&#39; >&lt;/a>"><a class='FavouritesNonactive' title='Morate se prijaviti da biste dodali u favorite' ></a></td><td title="KOSTT-26-8083-1-3-6">KOSTT-26-8083-1-3-6</td><td title="Oper. Sistemi,Trans.dhe Tregu- KOSTT   SH.A.">Oper. Sistemi,Trans.dhe Tregu- KOSTT   SH.A.</td><td title="2026/KOSTT-26-8083-1-3-6/B05-0020598">2026/KOSTT-26-8083-1-3-6/B05-0020598</td><td title="B05 Njoftim per Kontrat">B05 Njoftim per Kontrat</td><td title="Furnizim me karrige lëvizëse">Furnizim me karrige lëvizëse</td><td title="36115000-0">36115000-0</td><td title="Karrige">Karrige</td><td title="1 Furnizim">1 Furnizim</td><td title="Vlerë e ulët, Kuotimit të Çmimit">Vlerë e ulët, Kuotimit të Çmimit</td><td title="6 Kuotim i Çmimit">6 Kuotim i Çmimit</td><td title="5,100.00" style="text-align:right;">5,100.00</td><td title="29.09.2026 13:00">29.09.2026 13:00</td><td title="24.09.2026 00:00">24.09.2026</td><td></td><td title="Sipas specifikimit teknik, KOSTT Sh.A">Sipas specifikimit teknik, KOSTT Sh.A</td><td></td><td title="Dorëzimi i tenderëve">Dorëzimi i tenderëve</td>
+			</tr><tr class="up" align="left">
+				<td colspan="19"><a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl00&#39;,&#39;&#39;)">1</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl01&#39;,&#39;&#39;)">2</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl02&#39;,&#39;&#39;)">3</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl03&#39;,&#39;&#39;)">4</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl04&#39;,&#39;&#39;)">5</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl05&#39;,&#39;&#39;)">6</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl06&#39;,&#39;&#39;)">7</a>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl07&#39;,&#39;&#39;)">8</a>&nbsp;<span>9</span>&nbsp;<a href="javascript:__doPostBack(&#39;uiView$gridResults$ctl24$ctl09&#39;,&#39;&#39;)">10</a></td>
+			</tr>
+		</table><input name="gridResults__SelectedValues" type="text" id="gridResults__SelectedValues" style="display:none;" /></td>
+	</tr><tr>
+		<td><span id="uiView_lblRecordCount" class="font-default RecordCount">Numri i përgjithshëm të dhënave të cilat i plotësojnë kriteret e kërkimit: <span> 217929.</span></span></td>
+	</tr><tr>
+		<td align="right"><input type="submit" name="uiView$btnDoAction" value="" id="uiView_btnDoAction" style="display:none;" /><input name="uiView$txtSelectedAction" type="text" id="uiView_txtSelectedAction" style="display:none;" /></td>
+	</tr>
+</table></span><span id="uiContextMenu"><a href="#uiContextMenu_ctl00_SkipLink"><img alt="Skip Navigation Links" src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=sdJQaeXN21NUH_2ajUnEhp_YUwrsjWgq5bMVe-rtceSGi5JGl6koVxHlLnQWGl-mRUvs684mLPxIIS6qyAQaqD_QsfsKSN2hq_Bmh7R6sy41&amp;t=638942282805310136" width="0" height="0" style="border-width:0px;" /></a><table id="uiContextMenu_ctl00" title="Dokumentet e publikuara" class="font-default uiContextMenu_ctl00_5 uiContextMenu_ctl00_2" cellpadding="0" cellspacing="0" border="0" style="visibility:hidden;position:absolute;">
+	<tr onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Detajet" id="uiContextMenu_ctl00n0">
+		<td><table class="menu-item-style uiContextMenu_ctl00_4" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_3" href="javascript:uiView_DoAction(4);" style="border-style:none;font-size:1em;">Detajet </a></td>
+			</tr>
+		</table></td>
+	</tr><tr onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Shto në të preferuarat" id="uiContextMenu_ctl00n1">
+		<td><table class="menu-item-style uiContextMenu_ctl00_4" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_3" href="javascript:if (confirm(&#39;A jeni të sigurtë?&#39;)){ uiView_DoAction(1); }" style="border-style:none;font-size:1em;">Shto në të preferuarat </a></td>
+			</tr>
+		</table></td>
+	</tr><tr onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Hiqni nga te preferuarat" id="uiContextMenu_ctl00n2">
+		<td><table class="menu-item-style uiContextMenu_ctl00_4" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_3" href="javascript:if (confirm(&#39;A jeni të sigurtë?&#39;)){ uiView_DoAction(2); }" style="border-style:none;font-size:1em;">Hiqni nga te preferuarat </a></td>
+			</tr>
+		</table></td>
+	</tr><tr onmouseover="Menu_HoverStatic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Filtro sipas fushës" id="uiContextMenu_ctl00n3">
+		<td><table class="menu-item-style uiContextMenu_ctl00_4" cellpadding="0" cellspacing="0" border="0" width="100%">
+			<tr>
+				<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_3" href="#" style="border-style:none;font-size:1em;cursor:text;">Filtro sipas fushës </a></td><td style="width:0;"><img src="../Images/arrow_right.gif" alt="Expand Filtro sipas fushës" style="border-style:none;vertical-align:middle;" /></td>
+			</tr>
+		</table></td>
+	</tr>
+</table><div id="uiContextMenu_ctl00n3Items" class="uiContextMenu_ctl00_0 font-default uiContextMenu_ctl00_8">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Numrin e prokurimit" id="uiContextMenu_ctl00n4">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(5);" style="border-style:none;font-size:1em;">Numrin e prokurimit </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Numri i publikimit" id="uiContextMenu_ctl00n5">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(6);" style="border-style:none;font-size:1em;">Numri i publikimit </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Lloji i dokumentit" id="uiContextMenu_ctl00n6">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(7);" style="border-style:none;font-size:1em;">Lloji i dokumentit </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Lënda e prokurimit / grupi" id="uiContextMenu_ctl00n7">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(8);" style="border-style:none;font-size:1em;">Lënda e prokurimit / grupi </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="FPP" id="uiContextMenu_ctl00n8">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(9);" style="border-style:none;font-size:1em;">FPP </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="FPP - Përshkrimi" id="uiContextMenu_ctl00n9">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(10);" style="border-style:none;font-size:1em;">FPP - Përshkrimi </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Vlera e parashikuar" id="uiContextMenu_ctl00n10">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(11);" style="border-style:none;font-size:1em;">Vlera e parashikuar </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Data e Mbylljes" id="uiContextMenu_ctl00n11">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(12);" style="border-style:none;font-size:1em;">Data e Mbylljes </a></td>
+				</tr>
+			</table></td>
+		</tr><tr onmouseover="Menu_HoverDynamic(this)" onmouseout="Menu_Unhover(this)" onkeyup="Menu_Key(event)" title="Data e publikimit" id="uiContextMenu_ctl00n12">
+			<td><table class="menu-item-style uiContextMenu_ctl00_7" cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td style="width:100%;"><a class="uiContextMenu_ctl00_1 menu-item-style uiContextMenu_ctl00_6" href="javascript:uiView_DoAction(13);" style="border-style:none;font-size:1em;">Data e publikimit </a></td>
+				</tr>
+			</table></td>
+		</tr>
+	</table><div class="menu-item-style uiContextMenu_ctl00_7 uiContextMenu_ctl00_0" id="uiContextMenu_ctl00n3ItemsUp" onmouseover="PopOut_Up(this)" onmouseout="PopOut_Stop(this)" style="text-align:center;">
+		<img src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=CdYQfiqzXYJupSaiH5rhx77ZHfTmhKvusLmGA1wwEUArbfN1w0P3gvJjBUEVQ3a9xboZEl9oWM-yK0ZHf2UK6OCMQJk3C09x4FU7Bb3Bl7k1&amp;t=638942282805310136" alt="Scroll up" />
+	</div><div class="menu-item-style uiContextMenu_ctl00_7 uiContextMenu_ctl00_0" id="uiContextMenu_ctl00n3ItemsDn" onmouseover="PopOut_Down(this)" onmouseout="PopOut_Stop(this)" style="text-align:center;">
+		<img src="/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=Ln1TvzUl_OYJdPp7mNBvj15gRUNohTTGyxIbXU9eeAZC1l9oYcaP_EiEx6I7PgDUi10cG3k3wfuU20I7bjtFCfoMDurHdSOH7E7F5T8mZaE1&amp;t=638942282805310136" alt="Scroll down" />
+	</div>
+</div><a id="uiContextMenu_ctl00_SkipLink"></a><div id="uiContextMenu_ctl01">
+	<input name="uiContextMenu$ctl03" type="text" value=";uiContextMenu_ctl00n0;uiContextMenu_ctl00n1;uiContextMenu_ctl00n2;uiContextMenu_ctl00n4;uiContextMenu_ctl00n5;uiContextMenu_ctl00n6;uiContextMenu_ctl00n7;uiContextMenu_ctl00n8;uiContextMenu_ctl00n9;uiContextMenu_ctl00n10;uiContextMenu_ctl00n11;uiContextMenu_ctl00n12;" id="uiContextMenu_ctl03" style="display:none;" /><input name="uiContextMenu$ctl04" type="text" value=";;;;;;;;;;;;;" id="uiContextMenu_ctl04" style="display:none;" /><input name="uiContextMenu$ctl05" type="text" value=";" id="uiContextMenu_ctl05" style="display:none;" /><input type="submit" name="uiContextMenu$ctl06" value="" id="uiContextMenu_ctl06" style="display:none;" />
+</div></span></td>
+
+                            </tr>
+                            <tr>
+                                <td id="uiCommandButtonsCell" colspan="3" class="Buttons">
+                                <span id="uiCommandButtons"><table border="0">
+	<tr>
+		<td></td><td><span id="uiCommandButtons_n4" title="Detajet" onclick="uiView_DoAction(4);; return false;__doPostBack(&#39;uiCommandButtons$n4$ctl00&#39;,&#39;&#39;)"><input type="button" class="ButtonNN" value="Detajet" /><input type="submit" name="uiCommandButtons$n4$ctl00" value="" style="display:none;" /></span></td><td><span id="uiCommandButtons_n1" title="Shto në të preferuarat" onclick="if (confirm(&#39;A jeni të sigurtë?&#39;)){ uiView_DoAction(1); }; return false;__doPostBack(&#39;uiCommandButtons$n1$ctl00&#39;,&#39;&#39;)"><input type="button" class="ButtonNN" value="Shto në të preferuarat" /><input type="submit" name="uiCommandButtons$n1$ctl00" value="" style="display:none;" /></span></td><td><span id="uiCommandButtons_n2" title="Hiqni nga te preferuarat" onclick="if (confirm(&#39;A jeni të sigurtë?&#39;)){ uiView_DoAction(2); }; return false;__doPostBack(&#39;uiCommandButtons$n2$ctl00&#39;,&#39;&#39;)"><input type="button" class="ButtonNN" value="Hiqni nga te preferuarat" /><input type="submit" name="uiCommandButtons$n2$ctl00" value="" style="display:none;" /></span></td><td><span id="uiCommandButtons_n0" title="FPP" onclick="window.open(&#39;../PreglediFrm.aspx?method=CPV&#39;); return false;__doPostBack(&#39;uiCommandButtons$n0$ctl00&#39;,&#39;&#39;)"><input type="button" class="ButtonNN" value="FPP" /><input type="submit" name="uiCommandButtons$n0$ctl00" value="" style="display:none;" /></span></td>
+	</tr>
+</table><div id="uiCommandButtons_ctl01">
+	<input name="uiCommandButtons$ctl03" type="text" value=";uiCommandButtons_n4;uiCommandButtons_n1;uiCommandButtons_n2;" id="uiCommandButtons_ctl03" style="display:none;" /><input name="uiCommandButtons$ctl04" type="text" value=";;;;" id="uiCommandButtons_ctl04" style="display:none;" /><input name="uiCommandButtons$ctl05" type="text" value=";" id="uiCommandButtons_ctl05" style="display:none;" />
+</div></span></td>
+
+                            </tr>
+                        </table>                    
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+
+
+<div class="FormFooter">
+    <div class="Inner">
+        <a href="#Pocetak" id="FormFooter1_GoTop" class="ButtonTop Button right"><span></span></a>
+        <div class="clear" >
+        </div>
+        <script>
+            this.set
+        </script>
+    </div>
+</div>
+
+                    </td>
+                </tr>
+                <tr class="hidden">
+                    <td>
+                        <input name="uiFilterName" type="hidden" id="uiFilterName" />
+                        <input name="uiFilterDisplayStyle" type="hidden" id="uiFilterDisplayStyle" />
+                        <input onclick="__doPostBack('uiFilterSearch','')" name="uiFilterSearch" type="button" id="uiFilterSearch" />
+                        <input onclick="__doPostBack('uiFilterReset','')" name="uiFilterReset" type="button" id="uiFilterReset" />
+                        <input onclick="__doPostBack('uiFilterSave','')" name="uiFilterSave" type="button" id="uiFilterSave" />
+                        <input name="uiFilterSelectedTxt" type="hidden" id="uiFilterSelectedTxt" />
+                        <input onclick="__doPostBack('uiFilterSelectedBtn','')" name="uiFilterSelectedBtn" type="button" id="uiFilterSelectedBtn" />
+                        <input onclick="__doPostBack('uiFilterDeleteBtn','')" name="uiFilterDeleteBtn" type="button" id="uiFilterDeleteBtn" />
+                        <input name="uiFirstFilterControlId" type="hidden" id="uiFirstFilterControlId" value="uiFilter_Txt_Broj Nabave" />
+                        <div id="uiDoAsyncPostBackPnl">
+	
+                                <input type="submit" name="uiDoAsyncPostBackBtn" value="" id="uiDoAsyncPostBackBtn" style="display:none;" />
+                            
+</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+<script type="text/javascript">
+//<![CDATA[
+var eWorld_CalendarPopup_Calendars =  new Array(new CalendarPopup_Calendar('uiFilter_Calendar_RokZaDostavuPonuda', 'uiFilter_Calendar_RokZaDostavuPonuda_textBox', 'uiFilter_Calendar_RokZaDostavuPonuda_label', 'uiFilter_Calendar_RokZaDostavuPonuda_button', 'uiFilter_Calendar_RokZaDostavuPonuda_image', 'uiFilter_Calendar_RokZaDostavuPonuda_hidden', 'uiFilter_Calendar_RokZaDostavuPonuda_validateHidden', 'uiFilter_Calendar_RokZaDostavuPonuda_enableHidden', 'uiFilter_Calendar_RokZaDostavuPonuda_calendar', 'uiFilter_Calendar_RokZaDostavuPonuda_monthYear', 6, new Array('Janar','Shkurt','Mars','Prill','Maj','Qershor','Korrik','Gusht','Shtator','Tetor','Nëntor','Dhjetor'), new Array('H', 'M', 'M', 'E', 'P', 'S', 'D'), 1, 6, 5, false, '01/01/1900', '01/01/2050', 3, false, 0, 0, true, 'Clear Date', 'Select a Date', false, 'Today\'s Date:', '', '', '', '', '', -1, '09/27/2026', 'Apply', 'Cancel', '', false, false, false, true), new CalendarPopup_Calendar('uiFilter_Calendar_RokZaDostavuPonuda_EndValue', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_textBox', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_label', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_button', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_image', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_hidden', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_validateHidden', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_enableHidden', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_calendar', 'uiFilter_Calendar_RokZaDostavuPonuda_EndValue_monthYear', 6, new Array('Janar','Shkurt','Mars','Prill','Maj','Qershor','Korrik','Gusht','Shtator','Tetor','Nëntor','Dhjetor'), new Array('H', 'M', 'M', 'E', 'P', 'S', 'D'), 1, 6, 5, false, '01/01/1900', '01/01/2050', 3, false, 0, 0, true, 'Clear Date', 'Select a Date', false, 'Today\'s Date:', '', '', '', '', '', -1, '09/27/2026', 'Apply', 'Cancel', '', false, false, false, true), new CalendarPopup_Calendar('uiFilter_Calendar_DatumObjave', 'uiFilter_Calendar_DatumObjave_textBox', 'uiFilter_Calendar_DatumObjave_label', 'uiFilter_Calendar_DatumObjave_button', 'uiFilter_Calendar_DatumObjave_image', 'uiFilter_Calendar_DatumObjave_hidden', 'uiFilter_Calendar_DatumObjave_validateHidden', 'uiFilter_Calendar_DatumObjave_enableHidden', 'uiFilter_Calendar_DatumObjave_calendar', 'uiFilter_Calendar_DatumObjave_monthYear', 6, new Array('Janar','Shkurt','Mars','Prill','Maj','Qershor','Korrik','Gusht','Shtator','Tetor','Nëntor','Dhjetor'), new Array('H', 'M', 'M', 'E', 'P', 'S', 'D'), 1, 6, 5, false, '01/01/1900', '01/01/2050', 3, false, 0, 0, true, 'Clear Date', 'Select a Date', false, 'Today\'s Date:', '', '', '', '', '', -1, '09/27/2026', 'Apply', 'Cancel', '', false, false, false, true), new CalendarPopup_Calendar('uiFilter_Calendar_DatumObjave_EndValue', 'uiFilter_Calendar_DatumObjave_EndValue_textBox', 'uiFilter_Calendar_DatumObjave_EndValue_label', 'uiFilter_Calendar_DatumObjave_EndValue_button', 'uiFilter_Calendar_DatumObjave_EndValue_image', 'uiFilter_Calendar_DatumObjave_EndValue_hidden', 'uiFilter_Calendar_DatumObjave_EndValue_validateHidden', 'uiFilter_Calendar_DatumObjave_EndValue_enableHidden', 'uiFilter_Calendar_DatumObjave_EndValue_calendar', 'uiFilter_Calendar_DatumObjave_EndValue_monthYear', 6, new Array('Janar','Shkurt','Mars','Prill','Maj','Qershor','Korrik','Gusht','Shtator','Tetor','Nëntor','Dhjetor'), new Array('H', 'M', 'M', 'E', 'P', 'S', 'D'), 1, 6, 5, false, '01/01/1900', '01/01/2050', 3, false, 0, 0, true, 'Clear Date', 'Select a Date', false, 'Today\'s Date:', '', '', '', '', '', -1, '09/27/2026', 'Apply', 'Cancel', '', false, false, false, true));
+var eWorld_CalendarPopup_Styles =  new Array(new CalendarPopup_Style('uiFilter_Calendar_RokZaDostavuPonuda', "style='cursor:pointer;' class='WeekdayStyle'", "style='cursor:pointer;' class='WeekendStyle'", "style='cursor:pointer;' class='OffMonthStyle'", "style='cursor:pointer;' class='SelectedDateStyle'", "style='cursor:pointer;' class='MonthHeaderStyle'", "class='DayHeaderStyle'", "style='cursor:pointer;' class='ClearDateStyle'", "style='cursor:pointer;' class='GoToTodayStyle'", "style='cursor:pointer;' class='TodayDayStyle'", "style='font-style:italic;cursor:pointer;'", "style='font-style:italic;cursor:pointer;'", "style='color:Black;background-color:White;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:#B5D8FA;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:LightGrey;border-color:Black;border-width:1px;border-style:solid;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Gray;background-color:#E5E5E5;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;'"), new CalendarPopup_Style('uiFilter_Calendar_RokZaDostavuPonuda_EndValue', "style='cursor:pointer;' class='WeekdayStyle'", "style='cursor:pointer;' class='WeekendStyle'", "style='cursor:pointer;' class='OffMonthStyle'", "style='cursor:pointer;' class='SelectedDateStyle'", "style='cursor:pointer;' class='MonthHeaderStyle'", "class='DayHeaderStyle'", "style='cursor:pointer;' class='ClearDateStyle'", "style='cursor:pointer;' class='GoToTodayStyle'", "style='cursor:pointer;' class='TodayDayStyle'", "style='font-style:italic;cursor:pointer;'", "style='font-style:italic;cursor:pointer;'", "style='color:Black;background-color:White;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:#B5D8FA;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:LightGrey;border-color:Black;border-width:1px;border-style:solid;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Gray;background-color:#E5E5E5;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;'"), new CalendarPopup_Style('uiFilter_Calendar_DatumObjave', "style='cursor:pointer;' class='WeekdayStyle'", "style='cursor:pointer;' class='WeekendStyle'", "style='cursor:pointer;' class='OffMonthStyle'", "style='cursor:pointer;' class='SelectedDateStyle'", "style='cursor:pointer;' class='MonthHeaderStyle'", "class='DayHeaderStyle'", "style='cursor:pointer;' class='ClearDateStyle'", "style='cursor:pointer;' class='GoToTodayStyle'", "style='cursor:pointer;' class='TodayDayStyle'", "style='font-style:italic;cursor:pointer;'", "style='font-style:italic;cursor:pointer;'", "style='color:Black;background-color:White;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:#B5D8FA;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:LightGrey;border-color:Black;border-width:1px;border-style:solid;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Gray;background-color:#E5E5E5;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;'"), new CalendarPopup_Style('uiFilter_Calendar_DatumObjave_EndValue', "style='cursor:pointer;' class='WeekdayStyle'", "style='cursor:pointer;' class='WeekendStyle'", "style='cursor:pointer;' class='OffMonthStyle'", "style='cursor:pointer;' class='SelectedDateStyle'", "style='cursor:pointer;' class='MonthHeaderStyle'", "class='DayHeaderStyle'", "style='cursor:pointer;' class='ClearDateStyle'", "style='cursor:pointer;' class='GoToTodayStyle'", "style='cursor:pointer;' class='TodayDayStyle'", "style='font-style:italic;cursor:pointer;'", "style='font-style:italic;cursor:pointer;'", "style='color:Black;background-color:White;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:#B5D8FA;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Black;background-color:LightGrey;border-color:Black;border-width:1px;border-style:solid;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;cursor:pointer;'", "style='color:Gray;background-color:#E5E5E5;font-family:Verdana,Helvetica,Tahoma,Arial;font-size:XX-Small;'"));
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+window.focus();Idom3_CommandMenu_MonitorInIntervals('uiContextMenu_ctl00', 17, 'uiContextMenu_ctl03', 'uiContextMenu_ctl05', 'uiContextMenu_ctl04'); var uiContextMenu_ctl00_Data = new Object();
+uiContextMenu_ctl00_Data.disappearAfter = 500;
+uiContextMenu_ctl00_Data.horizontalOffset = 1;
+uiContextMenu_ctl00_Data.verticalOffset = 0;
+uiContextMenu_ctl00_Data.hoverClass = 'uiContextMenu_ctl00_16 font-default';
+uiContextMenu_ctl00_Data.hoverHyperLinkClass = 'uiContextMenu_ctl00_15 font-default';
+uiContextMenu_ctl00_Data.staticHoverClass = 'uiContextMenu_ctl00_14 font-default';
+uiContextMenu_ctl00_Data.staticHoverHyperLinkClass = 'uiContextMenu_ctl00_13 font-default';
+uiContextMenu_ctl00_Data.iframeUrl = '/SPIN_PROD/APPLICATION/IPN/WebResource.axd?d=8LPzMn7lu3rzZAQSF943qz0XFo_tSAuTbFAGDuCplLWcGbl33xqJQ9tgyLakTUayYi44Cyio0hVVRHbtxtved4zVbhX-cRCk7hidwr0xjXI1&t=638942282805310136';
+Idom3_CommandToolBar_MonitorInIntervals('uiCommandButtons', 14, 'uiCommandButtons_ctl03', 'uiCommandButtons_ctl05', 'uiCommandButtons_ctl04'); //]]>
+</script>
+</form>
+</body>
+</html>
