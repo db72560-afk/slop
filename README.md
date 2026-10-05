@@ -64,3 +64,4 @@ The API defaults to the local Docker database. To override it, create `api/.env`
 DATABASE_URL=postgres://eprokurimi:eprokurimi@localhost:5432/eprokurimi
 PORT=3001
 ```
+# slop
