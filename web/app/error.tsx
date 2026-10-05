@@ -1,9 +1,24 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Container } from '../components/container';
+import { StateMessage } from '../components/state-message';
 import { t } from '../lib/i18n';
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  useEffect(() => { console.error(error); }, [error]);
-  return <main className="shell"><div className="error-panel"><p className="eyebrow">{t.brand}</p><h1>{t.errorTitle}</h1><p>{t.errorDescription}</p><button type="button" onClick={reset} className="button-primary">{t.retry}</button></div></main>;
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
+  return (
+    <main>
+      <Container className="py-10">
+        <StateMessage
+          title={t.errorTitle}
+          description={t.errorDescription}
+          action={<button type="button" onClick={reset} className="btn-primary">{t.retry}</button>}
+        />
+      </Container>
+    </main>
+  );
 }

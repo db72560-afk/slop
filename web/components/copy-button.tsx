@@ -2,23 +2,44 @@
 
 import { useState } from 'react';
 import { t } from '../lib/i18n';
+import { IconCheck } from './icons';
+
+async function writeClipboard(value: string): Promise<void> {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+  const area = document.createElement('textarea');
+  area.value = value;
+  area.setAttribute('readonly', '');
+  area.style.position = 'fixed';
+  area.style.left = '-9999px';
+  document.body.appendChild(area);
+  area.select();
+  const copied = document.execCommand('copy');
+  area.remove();
+  if (!copied) throw new Error('copy failed');
+}
 
 export function CopyButton({ value }: { value: string }) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   async function copy() {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
+    try {
+      await writeClipboard(value);
+      setStatus('copied');
+    } catch {
+      setStatus('failed');
+    }
+    window.setTimeout(() => setStatus('idle'), 1800);
   }
 
+  const label = status === 'copied' ? t.copied : status === 'failed' ? t.copyFailed : t.copy;
+
   return (
-    <button
-      type="button"
-      onClick={copy}
-      className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-    >
-      {copied ? t.copied : t.copy}
+    <button type="button" onClick={copy} className="btn w-full sm:w-auto" aria-live="polite">
+      {status === 'copied' ? <IconCheck className="h-4 w-4" /> : null}
+      {label}
     </button>
   );
 }

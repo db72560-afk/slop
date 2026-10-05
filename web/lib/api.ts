@@ -1,3 +1,5 @@
+import { cache } from 'react';
+
 export type Tender = {
   id: number;
   procurementNo: string;
@@ -84,9 +86,9 @@ export function getTenders(params: TenderQuery = {}): Promise<PaginatedResponse<
   return request<PaginatedResponse<Tender>>(`/api/tenders${query ? `?${query}` : ''}`);
 }
 
-export function getTender(id: string): Promise<Tender> {
+export const getTender = cache((id: string): Promise<Tender> => {
   return request<Tender>(`/api/tenders/${encodeURIComponent(id)}`);
-}
+});
 
 export function getAuthorities(): Promise<Authority[]> {
   return request<Authority[]>('/api/authorities');
